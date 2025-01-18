@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mxn{
+  padding-left: 6vw;
+  padding-right: 6vw;
+}
+
+.pacifico-regular {
+  font-family: "Pacifico", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Global Scrollbar Styling */
+
+/* Scrollbar Container */
+::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+  height: 8px; /* Horizontal scrollbar height */
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light grey background */
+  border-radius: 10px; /* Rounded corners */
+}
+
+/* Scrollbar Thumb */
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1; /* Light grey thumb color */
+  border-radius: 10px; /* Rounded corners */
+  transition: background 0.3s ease; /* Smooth hover transition */
+}
+
+/* Scrollbar Thumb on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; /* Slightly darker grey on hover */
+}
+
+/* Optional: Dark Mode Scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #bab7b7;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #959292;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #606060;
+  }
+}
+
+/* Hide scrollbar but keep scrolling functionality */
+.hide {
+  overflow: auto; /* Enables scrolling */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.hide::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
