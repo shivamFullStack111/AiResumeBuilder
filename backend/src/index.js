@@ -29,6 +29,9 @@ const startServer = async () => {
 
 startServer();
 
+app.get("/health", (req, res) => {
+  res.status(200).send("Server is running!");
+});
 app.listen(8000, async () => {
   console.log("server is running on port 8000");
 });
