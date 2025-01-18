@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { FaAngleDown, FaChevronDown } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
+import { UPDATE_RESUME } from "../../utils";
 
 interface Props {
   resume?: ResumeType | null;

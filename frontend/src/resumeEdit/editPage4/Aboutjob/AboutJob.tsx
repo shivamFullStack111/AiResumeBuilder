@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ResumeType, UPDATE_RESUME } from "../../editPage1/WorkExperience";
+import { ResumeType } from "../../editPage1/WorkExperience";
 import AiGenerated from "./AiGenerated";
 import GenerateWithAi from "./GenerateWithAi";
 import TextEditor from "./TextEditor";
 import { useLazyQuery } from "@apollo/client";
 import { useAppDispatch } from "../../../store/store";
 import { updateResume } from "../../../store/slices/resumeSlice";
+import { UPDATE_RESUME } from "../../../utils";
 
 interface Props {
   resume: ResumeType | null;
@@ -36,7 +37,8 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
   }, [resume?.workExperience, experienceNumber]);
 
   const handleContinue = () => {
-    const workExperience = resume?.workExperience[experienceNumber];
+    const workExperience =
+      resume?.workExperience && resume?.workExperience[experienceNumber];
     const updatedWorkExperience = {
       companyName: workExperience?.companyName,
       currentlyWorking: workExperience?.currentlyWorking,
@@ -47,16 +49,19 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
       startDate: workExperience?.startDate,
     };
 
-    const resumeWorkExperience = resume?.workExperience.map((data) => ({
-      companyName: data?.companyName,
-      currentlyWorking: data?.currentlyWorking,
-      endDate: data?.endDate,
-      jobTitle: data?.jobTitle,
-      location: data?.location,
-      startDate: data?.startDate,
-      responsibilities: data?.responsibilities || "",
-    }));
-    resumeWorkExperience[experienceNumber] = updatedWorkExperience;
+    const resumeWorkExperience =
+      resume?.workExperience &&
+      resume?.workExperience.map((data) => ({
+        companyName: data?.companyName,
+        currentlyWorking: data?.currentlyWorking,
+        endDate: data?.endDate,
+        jobTitle: data?.jobTitle,
+        location: data?.location,
+        startDate: data?.startDate,
+        responsibilities: data?.responsibilities || "",
+      }));
+    if (resumeWorkExperience)
+      resumeWorkExperience[experienceNumber] = updatedWorkExperience;
 
     updateResumeInBackend({
       variables: {

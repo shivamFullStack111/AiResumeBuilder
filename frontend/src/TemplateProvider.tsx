@@ -1,12 +1,13 @@
 import React, { useImperativeHandle, useRef, useState } from "react";
 import { ResumeType } from "./resumeEdit/editPage1/WorkExperience";
 import PreviewTemplate from "./PreviewTemplate";
-import { downloadResume } from "./utils";
+import { downloadResume, FormatingType } from "./utils";
 import { useReactToPrint } from "react-to-print";
 import { useNavigate } from "react-router-dom";
 
 interface ResumeProps {
-  resume: ResumeType;
+  resume: ResumeType | null;
+  formating: FormatingType;
 }
 
 // gray 900 for small heading and 500 for para
@@ -19,43 +20,52 @@ const formatDate = (timestamp: string | null) => {
   return date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
 };
 
-const TemplateProvider: React.FC<ResumeProps> = ({ resume }) => {
+const TemplateProvider: React.FC<ResumeProps> = (props) => {
+  const { resume, formating } = props;
   const [showPreview, setshowPreview] = useState<boolean>(false);
   const navigate = useNavigate();
+  // Set CSS variables for template formatting
+  const templateStyle = {
+    "--template-font-size": formating?.fontSize + "px",
+    "--template-line-spacing": formating?.lineSpacing,
+    "--template-font-family": formating?.fontFamily,
+  } as React.CSSProperties;
 
   return (
-    <>
-      {showPreview && (
-        <PreviewTemplate setshowPreview={setshowPreview} resume={resume} />
-      )}
+    <div style={templateStyle}>
+      <>
+        {showPreview && (
+          <PreviewTemplate setshowPreview={setshowPreview} resume={resume} />
+        )}
 
-      <div className=" bg-white rounded flex-col   h-full  flex  items-center shadow-md">
-        <div className="flex justify-between w-full mb-2  text-blue-500  font-semibold text-lg ">
-          <p className="hover:text-blue-600 cursor-pointer">
-            Change TemplateProvider
-          </p>
-          <p
-            onClick={() =>
-              navigate(`?page=4&templateid=${resume?._id}&edit=complete`)
-            }
-            className="hover:text-blue-600 cursor-pointer"
-          >
-            Preview
-          </p>
+        <div className=" bg-white rounded flex-col   h-full  flex  items-center shadow-md">
+          <div className="flex justify-between w-full mb-2  text-blue-500  font-semibold text-lg ">
+            <p className="hover:text-blue-600 cursor-pointer">
+              Change TemplateProvider
+            </p>
+            <p
+              onClick={() =>
+                navigate(`?page=4&templateid=${resume?._id}&edit=complete`)
+              }
+              className="hover:text-blue-600 cursor-pointer"
+            >
+              Preview
+            </p>
+          </div>
+          <div className="border rounded-md  shadow-lg border-gray-500">
+            <Template resume={resume} />
+          </div>
         </div>
-        <div className="border rounded-md  shadow-lg border-gray-500">
-          <Template resume={resume} />
-        </div>
-      </div>
-    </>
+      </>
+    </div>
   );
 };
 
 export default TemplateProvider;
 
 interface TemplateProps {
-  resume: ResumeType;
-  onClick?: (event: Event) => void;
+  resume: ResumeType | null;
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   text?: string;
   formating?: {
     fontSize: number;
@@ -65,11 +75,15 @@ interface TemplateProps {
     lineSpacing: number;
     fontFamily: string;
   };
+  templateFunctionsRef?: React.MutableRefObject<{
+    handlePrint: () => void;
+    handleDownloadResume: () => void;
+  }> | null;
 }
 
 export const Template: React.FC<TemplateProps> = (props) => {
   const { resume, onClick, text, templateFunctionsRef, formating } = props;
-  const resumeRef = useRef();
+  const resumeRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
     contentRef: resumeRef, // Kis component ko print karna hai
@@ -79,21 +93,30 @@ export const Template: React.FC<TemplateProps> = (props) => {
     downloadResume(resumeRef);
   };
 
+  const marginTop = {
+    marginTop: formating?.sectionSpacing,
+  };
+
+  const fontSize = { fontSize: formating?.headingSize };
+
   useImperativeHandle(templateFunctionsRef, () => ({
     handlePrint,
     handleDownloadResume,
   }));
 
+  const mainDivStyle = {
+    fontSize: formating?.fontSize,
+    lineHeight: formating?.lineSpacing,
+    fontFamily: formating?.fontFamily,
+  };
+
   return (
     <div
       onClick={onClick}
+      className={`template-container rounded-md bg-white w-full p-6 pt-3 hide  ${text}`}
       ref={resumeRef}
-      style={{
-        fontSize: formating?.fontSize,
-        lineHeight: formating?.lineSpacing,
-        fontFamily: formating?.fontFamily
-      }}
-      className={`rounded-md bg-white w-full p-6 pt-3 hide max-w-[500px] ${text}`}
+      style={mainDivStyle}
+      // className={`rounded-md bg-white w-full p-6 pt-3 hide max-w-[500px] ${text}`}
     >
       <p className="text-[115%] text-gray-800 font-bold">
         {resume?.personalInfo?.fullName}
@@ -104,12 +127,9 @@ export const Template: React.FC<TemplateProps> = (props) => {
         {resume?.personalInfo?.address?.pincode}
       </p>
       {/* summary section  */}
-      <div
-        style={{ marginTop: formating?.sectionSpacing }}
-        className="mt-[2px]"
-      >
+      <div style={marginTop} className="mt-[2px]">
         <p
-          style={{ fontSize: formating?.headingSize }}
+          style={fontSize}
           className="text-[60%] font-semibold text-black mt-[1%]"
         >
           SUMMARY
@@ -120,7 +140,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
       </div>
 
       {/* custom section  */}
-      <div style={{ marginTop: formating?.sectionSpacing }}>
+      <div style={marginTop}>
         {resume?.customSections?.map((section) => (
           <div className="mt-[2px]">
             <p className="text-[60%] font-semibold uppercase text-black mt-[1%]">
@@ -132,14 +152,9 @@ export const Template: React.FC<TemplateProps> = (props) => {
       </div>
 
       {/* skills section  */}
-      <div
-        style={{
-          marginTop: formating?.sectionSpacing,
-        }}
-        className="mt-[2px]"
-      >
+      <div style={marginTop} className="mt-[2px]">
         <p
-          style={{ fontSize: formating?.headingSize }}
+          style={fontSize}
           className="text-[60%] font-semibold text-black mt-[1%]"
         >
           SKILLS
@@ -163,7 +178,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
         className="mt-[2px]"
       >
         <p
-          style={{ fontSize: formating?.headingSize }}
+          style={fontSize}
           className="text-[60%] font-semibold text-black mt-[1%]"
         >
           EXPERIENCE
@@ -171,19 +186,10 @@ export const Template: React.FC<TemplateProps> = (props) => {
         {resume?.workExperience?.map((workExperience) => (
           <div className="mb-[3px]">
             <p className="text-[55%] font-semibold text-gray-800 leading-none ">
-              {workExperience?.jobTitle} at {workExperience?.companyName}{" "}
-              {/* {
-                new Date(Number(workExperience?.startDate))
-                  ?.toISOString()
-                  .split("T")[0]
-              } */}
-              {formatDate(workExperience?.startDate)}-
-              {formatDate(workExperience?.endDate)}
-              {/* {workExperience?.currentlyWorking
-                ? "Current"
-                : new Date(Number(workExperience?.endDate))
-                    ?.toISOString()
-                    .split("T")[0]} */}
+              {workExperience?.jobTitle} at {workExperience?.companyName}
+              {workExperience?.startDate &&
+                formatDate(workExperience?.startDate)}
+              -{workExperience?.endDate && formatDate(workExperience?.endDate)}
             </p>
             <p className="text-[55%] font-semibold mb-[3px] text-gray-800">
               {workExperience?.location}
@@ -204,12 +210,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
       </div>
 
       {/* education and training  */}
-      <div
-        style={{
-          marginTop: formating?.sectionSpacing,
-        }}
-        className="mt-[2px]"
-      >
+      <div style={marginTop} className="mt-[2px]">
         <p
           style={{
             fontSize: formating?.headingSize,
@@ -241,12 +242,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
       </div>
 
       {/* languages  */}
-      <div
-        style={{
-          marginTop: formating?.sectionSpacing,
-        }}
-        className="mt-[2px]"
-      >
+      <div style={marginTop} className="mt-[2px]">
         <p className="text-[60%] font-semibold  w-full text-black mt-[1%]">
           LANGUAGES
         </p>
@@ -259,10 +255,10 @@ export const Template: React.FC<TemplateProps> = (props) => {
               <div className="h-1 w-[70%]  border bg-gray-400 mt-[1%]">
                 <p
                   className={`
-         ${language?.proficiency == "Beginner" && "w-[25%]"}
-         ${language?.proficiency == "Intermediate" && "w-[50%]"}
-          ${language?.proficiency == "Advanced" && "w-[75%]"}
-          ${language?.proficiency == "Fluent" && "w-[100%]"} bg-black h-full `}
+       ${language?.proficiency == "Beginner" && "w-[25%]"}
+       ${language?.proficiency == "Intermediate" && "w-[50%]"}
+        ${language?.proficiency == "Advanced" && "w-[75%]"}
+        ${language?.proficiency == "Fluent" && "w-[100%]"} bg-black h-full `}
                 ></p>
               </div>
               <p className="text-[55%]   font-semibold mb-[3px] text-gray-800">
@@ -274,14 +270,9 @@ export const Template: React.FC<TemplateProps> = (props) => {
       </div>
 
       {/* Links  */}
-      <div
-        style={{
-          marginTop: formating?.sectionSpacing,
-        }}
-        className="mt-[2px]"
-      >
+      <div style={marginTop} className="mt-[2px]">
         <p
-          style={{ fontSize: formating?.headingSize }}
+          style={fontSize}
           className="text-[60%] font-semibold text-black mt-[1%]"
         >
           WEBSITES, PORTFOLIOS, PROFILES

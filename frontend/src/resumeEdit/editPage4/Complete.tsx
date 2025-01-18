@@ -3,39 +3,39 @@ import { Template } from "../../TemplateProvider";
 import { GiPencilBrush } from "react-icons/gi";
 import { MdDelete, MdTextFormat } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { RootState, useAppDispatch } from "../../store/store";
 import { IoDownload } from "react-icons/io5";
 import { FaPrint } from "react-icons/fa";
 import { useLazyQuery } from "@apollo/client";
-import { DELETE_RESUME } from "../../home/Home";
 import { useNavigate } from "react-router-dom";
-import { setMyResumes } from "../../store/slices/resumeSlice";
-import { fontFamily } from "html2canvas/dist/types/css/property-descriptors/font-family";
+import { setformating, setMyResumes } from "../../store/slices/resumeSlice";
+import { DELETE_RESUME, FormatingType } from "../../utils";
+import { ResumeType } from "../editPage1/WorkExperience";
 
-const Complete: React.FC = (props) => {
+interface CompleteProps {
+  resume: ResumeType | null;
+  sethiddenSideBar: (value: boolean) => void;
+}
+
+const Complete: React.FC<CompleteProps> = (props) => {
   const [active, setactive] = useState(1);
-  const [resumeRef, setresumeRef] = useState(null);
-  const [isDownlaodResume, setisDownlaodResume] = useState(false);
-  const templateFunctionsRef = useRef();
-  const [formating, setformating] = useState({
-    fontSize: 20,
-    headingSize: 14,
-    sectionSpacing: 5,
-    paragraphSpreading: 5,
-    lineSpacing: 1.5,
-    fontFamily: "Arial, sans-serif",
-  });
+  const templateFunctionsRef = useRef<{
+    handlePrint: () => void;
+    handleDownloadResume: () => void;
+  }>({ handlePrint: () => {}, handleDownloadResume: () => {} });
+  // const [formating, setformating] = useState(defaultFormating);
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
-    props?.sethiddenSideBar(true);
-  }, []);
+    if (props) props?.sethiddenSideBar(true);
+  }, [props]);
 
   return (
     <div className=" overflow-y-scroll min-h-screen bg-blue-900 flex justify-center ">
       <div className="w-full grid grid-cols-4 mt-10 max-w-[1200px]  justify-center">
         <LeftSide
           formating={formating}
-          setformating={setformating}
+          // setformating={setformating}
           active={active}
           setactive={setactive}
         ></LeftSide>
@@ -52,7 +52,6 @@ const Complete: React.FC = (props) => {
         <RightSide
           resume={props?.resume}
           templateFunctionsRef={templateFunctionsRef}
-          resumeRef={resumeRef}
         />
       </div>
     </div>
@@ -61,9 +60,17 @@ const Complete: React.FC = (props) => {
 
 export default Complete;
 
-const LeftSide = (props) => {
-  const { active, setactive, setformating, formating } = props;
+interface LeftSideProps {
+  active: number;
+  setactive: (value: number) => void;
+  // setformating: (value: FormatingType) => void;
+  formating: FormatingType;
+}
+
+const LeftSide: React.FC<LeftSideProps> = (props) => {
+  const { active, setactive, formating } = props;
   const { resume } = useSelector((state: RootState) => state.resume);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     console.log(formating);
@@ -119,8 +126,11 @@ const LeftSide = (props) => {
             </div>
             <p className="text-white font-bold text-sm mt-4 ">Templates</p>
             <div className="mt-4 grid grid-cols-2 gap-3">
-              {Array.from({ length: 1 }).map((_, i) => (
-                <div className="w-full bg-white overflow-y-scroll hide h-40 rounded-md cursor-pointer">
+              {Array.from({ length: 1 }).map((_, i: number) => (
+                <div
+                  key={i}
+                  className="w-full bg-white overflow-y-scroll hide h-40 rounded-md cursor-pointer"
+                >
                   <Template text={"text-[5px]"} resume={resume} />
                 </div>
               ))}
@@ -135,12 +145,15 @@ const LeftSide = (props) => {
             <div className="mt-6">
               <p className="text-white font-semibold text-sm ">Font Style</p>
               <select
+                title="Font Family"
                 value={formating?.fontFamily}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    fontFamily: e.target.value,
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      fontFamily: e.target.value,
+                    })
+                  )
                 }
                 className="w-full mt-1 p-2 bg-blue-800 text-white border-blue-800 focus:border-white border-2  outline-none rounded-md"
                 name="font "
@@ -160,12 +173,11 @@ const LeftSide = (props) => {
                     value: "Lucida Console, monospace",
                   },
                   { label: "Roboto", value: "Roboto, sans-serif" },
-               
+
                   {
                     label: "Playfair Display",
                     value: "Playfair Display, serif",
                   },
-                
                 ].map((family) => (
                   <option value={family?.value}>{family?.label}</option>
                 ))}
@@ -175,15 +187,18 @@ const LeftSide = (props) => {
             <div className="mt-6">
               <p className="text-white font-semibold text-sm ">Font Size</p>
               <input
+                placeholder="."
                 className="mt-1 w-full h-[2px]"
                 min={1}
                 max={50}
                 value={formating?.fontSize}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    fontSize: Number(e.target.value),
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      fontSize: Number(e.target.value),
+                    })
+                  )
                 }
                 type="range"
               />
@@ -192,12 +207,15 @@ const LeftSide = (props) => {
             <div className="mt-6">
               <p className="text-white font-semibold text-sm ">Heading Size</p>
               <input
+                placeholder="."
                 value={formating?.headingSize}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    headingSize: Number(e.target.value),
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      headingSize: Number(e.target.value),
+                    })
+                  )
                 }
                 className="mt-1 w-full h-[2px]"
                 min={1}
@@ -217,10 +235,12 @@ const LeftSide = (props) => {
               <input
                 value={formating?.sectionSpacing}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    sectionSpacing: Number(e.target.value),
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      sectionSpacing: Number(e.target.value),
+                    })
+                  )
                 }
                 placeholder="."
                 className="mt-1 w-full h-[2px]"
@@ -234,12 +254,15 @@ const LeftSide = (props) => {
                 Paragraph Spreading
               </p>
               <input
+                placeholder="."
                 value={formating?.paragraphSpreading}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    paragraphSpreading: Number(e.target.value),
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      paragraphSpreading: Number(e.target.value),
+                    })
+                  )
                 }
                 className="mt-1 w-full h-[2px]"
                 min={1}
@@ -250,12 +273,15 @@ const LeftSide = (props) => {
             <div className="mt-6">
               <p className="text-white font-semibold text-sm ">Line Spacing</p>
               <input
+                placeholder="."
                 value={formating?.lineSpacing}
                 onChange={(e) =>
-                  setformating((prev) => ({
-                    ...prev,
-                    lineSpacing: Number(e.target.value),
-                  }))
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      lineSpacing: Number(e.target.value),
+                    })
+                  )
                 }
                 className="mt-1 w-full h-[2px]"
                 min={0}
@@ -271,14 +297,21 @@ const LeftSide = (props) => {
   );
 };
 
-const RightSide = (props) => {
+interface RightSideProps {
+  resume: ResumeType | null;
+  templateFunctionsRef: React.RefObject<{
+    handlePrint: () => void;
+    handleDownloadResume: () => void;
+  }>;
+}
+const RightSide: React.FC<RightSideProps> = (props) => {
   const [deleteResume, { error }] = useLazyQuery(DELETE_RESUME);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { myResumes } = useSelector((state: RootState) => state.resume);
 
   const handleDeleteResume = () => {
-    console.log(props.resume);
+    console.log(props?.resume);
     deleteResume({
       variables: {
         resumeId: props?.resume?._id,
@@ -298,9 +331,9 @@ const RightSide = (props) => {
       <div className="w-full h-full rounded-lg ">
         <div className="flex justify-center w-full gap-2 ">
           <div
-            onClick={() =>
-              props?.templateFunctionsRef?.current?.handleDownloadResume()
-            }
+            onClick={() => {
+              props?.templateFunctionsRef?.current?.handleDownloadResume();
+            }}
             className="bg-white rounded-lg hover:bg-green-400 cursor-pointer text-black px-5 flex flex-col justify-center items-center p-2"
           >
             <IoDownload className="text-2xl "></IoDownload>

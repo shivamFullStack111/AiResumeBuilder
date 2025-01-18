@@ -8,7 +8,7 @@ import CountryPage from "./editPage2/CountryPage";
 import Templates from "./editPage3/Templates";
 import MainEditing from "./editPage4/MainEditing";
 import { setResume } from "../store/slices/resumeSlice";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { RootState, useAppDispatch, useAppSelector } from "../store/store";
 
 const GET_RESUME = gql`
   query ($resumeid: String) {
@@ -16,7 +16,7 @@ const GET_RESUME = gql`
       _id
       userEmail
       onStep
-      skills 
+      skills
       hobbies
       workExperience {
         jobTitle
@@ -80,14 +80,10 @@ const EditResume: React.FC = () => {
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
 
-
   const { data, loading } = useQuery(GET_RESUME, {
     variables: { resumeid: param?.resumeid },
   });
-  const { resume } = useAppSelector((state) => state.resume);
-
-  console.log(JSON.stringify(data))
-
+  const { resume } = useAppSelector((state: RootState) => state.resume);
 
   useEffect(() => {
     if (data) {

@@ -6,11 +6,13 @@ import { PiUserCircleDashed } from "react-icons/pi";
 import { BiPencil } from "react-icons/bi";
 import { LuChevronUp } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
-import { useAppDispatch } from "../../store/store";
+import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
+import { UPDATE_RESUME } from "../../utils";
+import { useSelector } from "react-redux";
 
 interface Props {
   resume: ResumeType | null;
@@ -34,6 +36,7 @@ const AddSection: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const [languagesData, setlanguagesData] = useState<LanguagesType[]>([]);
   const [sectionsData, setsectionsData] = useState<SectionType[]>([]);
+  const { formating } = useSelector((state:RootState) => state.resume);
 
   useEffect(() => {
     if (props?.resume?.links?.length) {
@@ -94,9 +97,7 @@ const AddSection: React.FC<Props> = (props) => {
           currentPath: window.location.href,
         })
       );
-      navigate(
-        `?page=4&templateid=${props?.resume?._id}&edit=complete`
-      );
+      navigate(`?page=4&templateid=${props?.resume?._id}&edit=complete`);
     }
 
     // console.log(props?.resume)
@@ -140,7 +141,7 @@ const AddSection: React.FC<Props> = (props) => {
           <div className="col-span-2 pt-8 min-h-[80vh] w-full h-full max-h-screen overflow-y-scroll hide ">
             <div>
               {" "}
-              <TemplateProvider resume={props?.resume} />
+              <TemplateProvider formating={formating} resume={props?.resume} />
             </div>
           </div>{" "}
         </div>

@@ -12,6 +12,7 @@ import { RootState, useAppDispatch } from "../store/store";
 import { setMyResumes } from "../store/slices/resumeSlice";
 import { useSelector } from "react-redux";
 import { Template } from "../TemplateProvider";
+import { DELETE_RESUME } from "../utils";
 
 const REGISTER_USER = gql`
   mutation ($name: String, $email: String, $phoneNumber: String) {
@@ -97,13 +98,7 @@ const GET_USER_ALL_RESUMES = gql`
   }
 `;
 
-export const DELETE_RESUME = gql`
-  query ($resumeId: ID) {
-    deleteResume(resumeId: $resumeId) {
-      success
-    }
-  }
-`;
+
 
 const Home: React.FC = () => {
   const { user } = useUser();

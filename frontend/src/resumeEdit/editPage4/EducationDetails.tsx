@@ -2,13 +2,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import CustomInput from "../../components/CustomInput";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IoAddSharp } from "react-icons/io5";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import { ResumeType } from "../editPage1/WorkExperience";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useLazyQuery } from "@apollo/client";
-import { useAppDispatch } from "../../store/store";
+import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
+import { UPDATE_RESUME } from "../../utils";
+import { useSelector } from "react-redux";
 
 interface Props {
   resume: ResumeType | null;
@@ -35,6 +37,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
   const dispatch = useAppDispatch();
   const [courseEndDate, setcourseEndDate] = useState<string>("");
   const [educationNumber, seteducationNumber] = useState<number>(0);
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
     let edNumber: number = Number(searchParam.get("education")) - 1 || 0;
@@ -48,20 +51,26 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
   }
 
   const handleContinue = () => {
-    const updatedEducation: EducationType = resume?.education?.map(
-      (edu: EducationType) => ({
-        degree: edu?.degree || "",
-        institution: edu?.institution || "",
-        endDate: edu?.endDate || "",
-        otherCourses: edu?.otherCourses || [""],
-      })
-    );
-    updatedEducation[educationNumber] = {
-      degree: education?.degree || "",
-      institution: education?.institution || "",
-      endDate: courseEndDate || "",
-      otherCourses: works || [],
-    };
+    const updatedEducation:
+      | {
+          degree: string;
+          institution: string;
+          endDate: string;
+          otherCourses: string[];
+        }[]
+      | undefined = resume?.education?.map((edu: EducationType) => ({
+      degree: edu?.degree,
+      institution: edu?.institution,
+      endDate: edu?.endDate,
+      otherCourses: edu?.otherCourses,
+    }));
+    if (updatedEducation)
+      updatedEducation[educationNumber] = {
+        degree: education?.degree,
+        institution: education?.institution,
+        endDate: courseEndDate,
+        otherCourses: works,
+      };
 
     updateResumeInBackend({
       variables: {
@@ -325,7 +334,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
             </div>
           </div>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider resume={resume} />
+            <TemplateProvider formating={formating} resume={resume} />
           </div>{" "}
         </div>
         <div className="flex mt-4  justify-between">

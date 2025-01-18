@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CustomInput from "../../components/CustomInput";
 import { useNavigate } from "react-router-dom";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
+import { defaultFormating, UPDATE_RESUME } from "../../utils";
 
 interface Props {
   resume: ResumeType | null;
@@ -220,7 +221,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
             </div>
           </div>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider resume={resume} />
+            <TemplateProvider formating={defaultFormating} resume={resume} />
           </div>
         </div>
       </div>

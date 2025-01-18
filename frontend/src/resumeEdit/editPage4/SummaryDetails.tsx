@@ -3,19 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
 import { GrMagic } from "react-icons/gr";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import { ResumeType } from "../editPage1/WorkExperience";
 import { GEMINI_KEY } from "../../store/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLazyQuery } from "@apollo/client";
-import { useAppDispatch } from "../../store/store";
+import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
+import { UPDATE_RESUME } from "../../utils";
+import { useSelector } from "react-redux";
 
 const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface Props {
-  resume: ResumeType;
+  resume: ResumeType | null;
 }
 
 const SummaryDetails: React.FC<Props> = (props) => {
@@ -26,6 +28,8 @@ const SummaryDetails: React.FC<Props> = (props) => {
   const [finalSummary, setfinalSummary] = useState<string>("");
   const [updateResumeInBackend, { error }] = useLazyQuery(UPDATE_RESUME);
   const dispatch = useAppDispatch();
+  const { formating } = useSelector((state: RootState) => state.resume);
+
 
   const handleContinue = () => {
     updateResumeInBackend({
@@ -163,7 +167,7 @@ const SummaryDetails: React.FC<Props> = (props) => {
             </div>
           </div>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider resume={props?.resume} />
+            <TemplateProvider formating={formating} resume={props?.resume} />
           </div>{" "}
         </div>
         <div className="flex mt-4  justify-between">

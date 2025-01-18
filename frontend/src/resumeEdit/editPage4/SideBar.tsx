@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
-const SideBar: React.FC = ({ hiddenSideBar }) => {
+interface SideBarProps {
+  hiddenSideBar?: boolean;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ hiddenSideBar }) => {
   return (
     <div
       className={`w-[110px] bg-pink-400 h-full overflow-y-scroll flex flex-col items-center ${

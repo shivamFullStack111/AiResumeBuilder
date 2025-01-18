@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { ResumeType, UPDATE_RESUME } from "../editPage1/WorkExperience";
+import React from "react";
+import { ResumeType } from "../editPage1/WorkExperience";
 import Select from "react-select";
 import { useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
+import { UPDATE_RESUME } from "../../utils";
 
 interface Props {
   resume: ResumeType | null;
@@ -70,7 +71,7 @@ interface Country {
   value: string;
   label: string;
 }
-export const Countries: Country[] = [
+const Countries: Country[] = [
   {
     value: "Afghanistan",
     label: "Afghanistan",

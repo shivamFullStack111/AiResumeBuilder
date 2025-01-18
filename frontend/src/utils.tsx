@@ -1,10 +1,51 @@
+import { gql } from "@apollo/client";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+export const DELETE_RESUME = gql`
+  query ($resumeId: ID) {
+    deleteResume(resumeId: $resumeId) {
+      success
+    }
+  }
+`;
 
+export const UPDATE_RESUME = gql`
+  query ($resumeData: ResumeInput, $resumeid: String) {
+    updateResume(resumeData: $resumeData, resumeid: $resumeid) {
+      _id
+    }
+  }
+`;
 
-export const downloadResume = async (resumeRef) => {
+export interface FormatingType {
+  fontSize: number;
+  headingSize: number;
+  sectionSpacing: number;
+  paragraphSpreading: number;
+  lineSpacing: number;
+  fontFamily: string;
+}
+
+export const defaultFormating = {
+  fontSize: 20,
+  headingSize: 14,
+  sectionSpacing: 5,
+  paragraphSpreading: 5,
+  lineSpacing: 1.5,
+  fontFamily: "Arial, sans-serif",
+};
+
+interface ResumeRef {
+  current: HTMLElement | null;
+}
+
+export const downloadResume = async (resumeRef: ResumeRef): Promise<void> => {
   const element = resumeRef.current; // Target the resume div
+
+  if (!element) {
+    throw new Error("Resume element not found");
+  }
 
   // Increase canvas quality
   const canvas = await html2canvas(element, {

@@ -1,3 +1,4 @@
+import {  FormatingType } from '../../utils';
 import { PayloadAction } from './../../../node_modules/@reduxjs/toolkit/src/createAction';
 import { ResumeType } from './../../resumeEdit/editPage1/WorkExperience';
 import { createSlice } from "@reduxjs/toolkit";
@@ -7,11 +8,21 @@ import { createSlice } from "@reduxjs/toolkit";
 interface StateProps {
   resume:ResumeType | null
   myResumes:ResumeType[] 
+  formating:FormatingType
 }
 
 const inititalState:StateProps  = {
   resume:null,
   myResumes:[],
+  formating:{
+    fontSize: 20,
+    headingSize: 14,
+    sectionSpacing: 5,
+    paragraphSpreading: 5,
+    lineSpacing: 1.5,
+    fontFamily: "Arial, sans-serif",
+  },
+
 }
 
 
@@ -28,9 +39,14 @@ const resumeSlice = createSlice({
     setMyResumes:(state,action:PayloadAction<ResumeType[]>)=>{
       state.myResumes = action.payload
     },
+    setformating:(state,action:PayloadAction<FormatingType>)=>{
+      state.formating = {...state.formating,...action.payload}
+
+    }
+   
 
   }
 })
 
 export default resumeSlice.reducer 
-export const {setResume,updateResume,setMyResumes}=resumeSlice.actions
+export const {setResume,updateResume,setMyResumes,setformating}=resumeSlice.actions

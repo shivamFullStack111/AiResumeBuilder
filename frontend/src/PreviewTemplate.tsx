@@ -1,11 +1,18 @@
 import React, { useRef } from "react";
 import { Template } from "./TemplateProvider";
 import { IoMdDownload } from "react-icons/io";
-import { downloadResume } from "./utils";
+import { ResumeType } from "./resumeEdit/editPage1/WorkExperience";
 
-const PreviewTemplate: React.FC = (props) => {
+interface PreviewTemplateProps {
+  setshowPreview: (value: boolean) => void;
+  resume: ResumeType | null;
+}
+const PreviewTemplate: React.FC<PreviewTemplateProps> = (props) => {
   const { resume, setshowPreview } = props;
-  const templateFunctionsRef = useRef();
+  const templateFunctionsRef = useRef<{
+    handleDownloadResume: () => void;
+    handlePrint: () => void;
+  }>({ handleDownloadResume: () => {}, handlePrint: () => {} });
 
   return (
     <div
@@ -25,8 +32,7 @@ const PreviewTemplate: React.FC = (props) => {
       </div>
       <Template
         templateFunctionsRef={templateFunctionsRef}
-        onClick={(e: Event) => e.stopPropagation()}
-        downloadResume={downloadResume}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
         resume={resume}
       />
     </div>

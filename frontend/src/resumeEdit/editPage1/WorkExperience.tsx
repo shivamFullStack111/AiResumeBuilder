@@ -1,16 +1,11 @@
-import { gql, useLazyQuery } from "@apollo/client";
+import {  useLazyQuery } from "@apollo/client";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
+import { UPDATE_RESUME } from "../../utils";
 
-export const UPDATE_RESUME = gql`
-  query ($resumeData: ResumeInput, $resumeid: String) {
-    updateResume(resumeData: $resumeData, resumeid: $resumeid) {
-      _id
-    }
-  }
-`;
+
 export interface ResumeType {
   _id?: string;
   experience?: string;
