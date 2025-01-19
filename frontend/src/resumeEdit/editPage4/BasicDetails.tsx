@@ -3,10 +3,11 @@ import CustomInput from "../../components/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
-import { useAppDispatch } from "../../store/store";
+import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
-import { defaultFormating, UPDATE_RESUME } from "../../utils";
+import {  UPDATE_RESUME } from "../../utils";
+import { useSelector } from "react-redux";
 
 interface Props {
   resume: ResumeType | null;
@@ -39,6 +40,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
     },
   });
   const dispatch = useAppDispatch();
+  const { formating } = useSelector((state:RootState) => state.resume);
 
   // setresume to usestate
   useEffect(() => {
@@ -85,7 +87,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
       );
     }
 
-    navigate("?page=4&templateid=ghfh457t88ygurhg&edit=experience-details");
+    navigate(`?page=4&templateid=${resume?._id}&edit=experience-details`);
   };
 
   return (
@@ -221,7 +223,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
             </div>
           </div>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider formating={defaultFormating} resume={resume} />
+            <TemplateProvider formating={formating} resume={resume} />
           </div>
         </div>
       </div>

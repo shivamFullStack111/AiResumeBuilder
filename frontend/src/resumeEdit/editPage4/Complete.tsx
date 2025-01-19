@@ -114,15 +114,80 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
         {/* designs templates  */}
         {active == 1 && (
           <div className="p-4">
-            <p className="text-white font-bold text-sm ">Colors</p>
+            <p className="text-white font-bold text-sm ">
+              Colors {formating.fontColor}
+            </p>
             <div className="flex flex-wrap gap-2 mt-4">
-              <div className="h-8 w-8 rounded-full bg-red-500"></div>
-              <div className="h-8 w-8 rounded-full bg-green-500"></div>
-              <div className="h-8 w-8 rounded-full bg-blue-500"></div>
-              <div className="h-8 w-8 rounded-full bg-black"></div>
-              <div className="h-8 w-8 rounded-full bg-pink-500"></div>
-              <div className="h-8 w-8 rounded-full bg-violet-500"></div>
-              <div className="h-8 w-8 rounded-full bg-orange-500"></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-red-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating.fontColor == "text-red-600" && "border-2"
+                } bg-red-500`}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-green-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-green-600" && "border-2 border-gray-300"
+                } bg-green-500`}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-blue-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-blue-600" && "border-2 border-gray-300"
+                } bg-blue-500`}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-black" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-black" && "border-2 border-gray-300"
+                } bg-black`}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-pink-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-pink-600" && "border-2 border-gray-300"
+                } bg-pink-500  `}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-violet-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-violet-600" && "border-2 border-gray-300"
+                } bg-violet-500`}
+              ></div>
+              <div
+                onClick={() =>
+                  dispatch(
+                    setformating({ ...formating, fontColor: "text-orange-600" })
+                  )
+                }
+                className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
+                  formating?.fontColor == "text-orange-600" && "border-2 border-gray-300"
+                } bg-orange-500`}
+              ></div>
             </div>
             <p className="text-white font-bold text-sm mt-4 ">Templates</p>
             <div className="mt-4 grid grid-cols-2 gap-3">

@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/old-path",
+      "destination": "/new-path"
+    }
+  ]
+}

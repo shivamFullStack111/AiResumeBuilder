@@ -50,7 +50,7 @@ const SummaryDetails: React.FC<Props> = (props) => {
         })
       );
     }
-    navigate("?page=4&templateid=ghfh457t88ygurhg&edit=add-section-details");
+    navigate(`?page=4&templateid=${props?.resume?._id}&edit=add-section-details`);
   };
 
   useEffect(() => {

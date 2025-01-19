@@ -25,6 +25,7 @@ export interface FormatingType {
   paragraphSpreading: number;
   lineSpacing: number;
   fontFamily: string;
+  fontColor:string
 }
 
 export const defaultFormating = {

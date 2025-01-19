@@ -21,6 +21,7 @@ const inititalState:StateProps  = {
     paragraphSpreading: 5,
     lineSpacing: 1.5,
     fontFamily: "Arial, sans-serif",
+    fontColor:"text-black"
   },
 
 }

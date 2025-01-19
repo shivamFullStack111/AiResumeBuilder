@@ -12,7 +12,9 @@ app.use(express.json());
 // connect mongoose compas
 const mongoose = require("mongoose");
 mongoose
-  .connect("mongodb+srv://shivam111:shivam111@cluster0.rpeveqo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0ResumeBuilder")
+  .connect(
+    "mongodb+srv://shivam111:shivam111@cluster0.rpeveqo.mongodb.net/AiResumeBuilder?retryWrites=true&w=majority"
+  )
   .then(() => console.log("db connection established"))
   .catch((error) => console.log(error.message));
 
