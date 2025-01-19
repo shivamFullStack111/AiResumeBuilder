@@ -98,8 +98,6 @@ const GET_USER_ALL_RESUMES = gql`
   }
 `;
 
-
-
 const Home: React.FC = () => {
   const { user } = useUser();
   const [callRegister] = useMutation(REGISTER_USER);
@@ -112,6 +110,7 @@ const Home: React.FC = () => {
       userEmail: user?.primaryEmailAddress,
     },
   });
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
     if (data) {
@@ -215,17 +214,7 @@ const Home: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Template
-                      formating={{
-                        fontSize: 5,
-                        headingSize: 3,
-                        sectionSpacing: 2,
-                        paragraphSpreading: 2,
-                        lineSpacing: 1.2,
-                        fontFamily: "Arial, sans-serif",
-                      }}
-                      resume={resume}
-                    />
+                    <Template formating={formating} resume={resume} />
                   </div>
                 </div>
                 <div className="mt-1 text-sm text-gray-500">Web Developer </div>
