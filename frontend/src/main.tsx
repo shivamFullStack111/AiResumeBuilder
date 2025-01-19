@@ -7,8 +7,8 @@ import { Provider } from "react-redux";
 import store from "./store/store.ts";
 
 const client = new ApolloClient({
-  // uri: "http://localhost:8000/graphql",
-  uri: "https://airesumebuilder-g5gz.onrender.com/graphql",
+  uri: "http://localhost:5050/graphql",
+  // uri: "https://airesumebuilder-g5gz.onrender.com/graphql",
   cache: new InMemoryCache(),
 });
 

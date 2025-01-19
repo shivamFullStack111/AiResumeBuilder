@@ -243,7 +243,13 @@ export const Template: React.FC<TemplateProps> = (props) => {
 
       {/* languages  */}
       <div style={marginTop} className="mt-[2px]">
-        <p className="text-[60%] font-semibold  w-full text-black mt-[1%]">
+        <p
+          style={{
+            fontSize: formating?.headingSize,
+            lineHeight: formating?.lineSpacing,
+          }}
+          className="text-[60%] font-semibold  w-full text-black mt-[1%]"
+        >
           LANGUAGES
         </p>
         <div className="grid grid-cols-2">
