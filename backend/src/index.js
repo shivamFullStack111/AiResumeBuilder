@@ -16,6 +16,10 @@ mongoose
   .then(() => console.log("db connection established"))
   .catch((error) => console.log(error.message));
 
+app.get("/health", (req, res) => {
+  res.status(200).send("Server is running!");
+});
+
 const startServer = async () => {
   const server = new ApolloServer({
     typeDefs: typeDefs,
@@ -29,9 +33,6 @@ const startServer = async () => {
 
 startServer();
 
-app.get("/health", (req, res) => {
-  res.status(200).send("Server is running!");
-});
-app.listen(8000, async () => {
+app.listen(5050, async () => {
   console.log("server is running on port 8000");
 });
