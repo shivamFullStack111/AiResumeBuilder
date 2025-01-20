@@ -12,6 +12,7 @@ import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -30,8 +31,9 @@ const SummaryDetails: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const { formating } = useSelector((state: RootState) => state.resume);
 
-
   const handleContinue = () => {
+    if (!finalSummary)
+      return toast.error("Please add a summary that showcase your abilities");
     updateResumeInBackend({
       variables: {
         resumeData: {
@@ -50,7 +52,9 @@ const SummaryDetails: React.FC<Props> = (props) => {
         })
       );
     }
-    navigate(`?page=4&templateid=${props?.resume?._id}&edit=add-section-details`);
+    navigate(
+      `?page=4&templateid=${props?.resume?._id}&edit=add-section-details`
+    );
   };
 
   useEffect(() => {
@@ -90,6 +94,7 @@ const SummaryDetails: React.FC<Props> = (props) => {
 
   return (
     <div className="w-full flex justify-center">
+      <Toaster />
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5  grid-cols-6 ">
           <div className="col-span-4 w-full    h-full ">

@@ -8,7 +8,8 @@ import { useLazyQuery } from "@apollo/client";
 import { useAppDispatch } from "../../../store/store";
 import { updateResume } from "../../../store/slices/resumeSlice";
 import { UPDATE_RESUME } from "../../../utils";
-
+import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 interface Props {
   resume: ResumeType | null;
 }
@@ -26,17 +27,21 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
   if (experienceNumber == -1) experienceNumber = 0;
 
   useEffect(() => {
-    console.log(responsibilities);
-  }, [responsibilities]);
-
-  useEffect(() => {
     if (resume?.workExperience?.length)
       setresponsibilities(
         resume?.workExperience[experienceNumber]?.responsibilities || ""
       );
   }, [resume?.workExperience, experienceNumber]);
 
+  useEffect(() => {
+    console.log(responsibilities);
+  }, [responsibilities]);
+
   const handleContinue = () => {
+    if (!responsibilities) {
+      toast.error("Summary cannot be empty");
+      return;
+    }
     const workExperience =
       resume?.workExperience && resume?.workExperience[experienceNumber];
     const updatedWorkExperience = {
@@ -76,7 +81,7 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
     if (!error) {
       dispatch(updateResume({ workExperience: resumeWorkExperience }));
 
-      navigate("?page=4&templateid=ghfh457t88ygurhg&edit=education-details");
+      navigate(`?page=4&templateid=${resume?._id}&edit=education-details`);
     } else {
       console.log(error);
     }
@@ -84,6 +89,7 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
 
   return (
     <div className="w-full flex justify-center">
+      <Toaster />
       <div className="w-full max-w-[1200px]">
         <h3 className="mt-16 font-bold text-3xl text-slate-800">
           Next, write about what you did as a Developer{" "}

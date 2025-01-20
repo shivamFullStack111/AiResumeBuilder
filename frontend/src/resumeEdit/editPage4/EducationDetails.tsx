@@ -11,6 +11,7 @@ import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Props {
   resume: ResumeType | null;
@@ -50,7 +51,13 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
     console.log(error);
   }
 
-  const handleContinue = () => {
+  const handleContinue = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(works?.length&&!works[works?.length-1]) {
+       toast.error('Course cannot be empty')
+       console.log(works?.length,works[works?.length-1])
+       return
+    };
     const updatedEducation:
       | {
           degree: string;
@@ -119,7 +126,8 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-[1200px] ">
+      <Toaster />
+      <form onSubmit={handleContinue} className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5  grid-cols-6 gap-5 ">
           <div className="col-span-4 w-full    h-full ">
             <h3 className="mt-16 font-bold text-3xl text-slate-800">
@@ -202,6 +210,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
             </div>
             <div className="grid grid-cols-1 mt-4 gap-5  w-full">
               <CustomInput
+                required
                 autofocus
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   seteducation((p) => ({ ...p, institution: e.target.value }));
@@ -213,6 +222,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
             </div>
             <div className="grid mt-5 grid-cols-2 gap-4  w-full">
               <CustomInput
+                required
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   seteducation((p) => ({ ...p, degree: e.target.value }));
                 }}
@@ -222,6 +232,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
               ></CustomInput>
               <div className=" flex gap-4">
                 <CustomInput
+                  required
                   value={
                     courseEndDate
                       ? courseEndDate
@@ -264,17 +275,19 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                 {works?.length ? "-" : "+"} Add course work or other details
               </p>
 
-              {works?.length && (
+              {works?.length ? (
                 <>
                   <div
                     onClick={() => {
+                      if (!works[works.length - 1])
+                        return toast.error("Course field cannot be empty");
                       if (works[works.length - 1]) {
                         setworks((p) => [...p, ""]);
                       }
                     }}
                     className="h-8 w-24 ml-auto cursor-pointer  bg-pink-400 mt-2 text-gray-100 hover:shadow-xl hover:bg-pink-500 flex justify-center items-center rounded-md"
                   >
-                    <IoAddSharp />
+                    <IoAddSharp /> Add
                   </div>
                   <div className="mt-5">
                     {works.map((work: string, i: number) => (
@@ -308,13 +321,16 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                     ))}
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
             <div>
-              <p className="text-xl font-semibold text-gray-700 mt-4">
-                Your's Education's
-              </p>
+              {resume?.education?.length && resume?.education?.length > 1 ? (
+                <p className="text-xl font-semibold text-gray-700 mt-4">
+                  Your's Education's
+                </p>
+              ) : null}
               {resume?.education?.map((edu, i: number) => {
+                if (i == educationNumber) return null;
                 return (
                   <div
                     onClick={() => {
@@ -344,14 +360,14 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
           >
             Back
           </div>
-          <div
-            onClick={handleContinue}
+          <button
+            type="submit"
             className="px-16 rounded-3xl bg-blue-500  hover:bg-blue-600 cursor-pointer text-white font-semibold py-2"
           >
             Continue
-          </div>
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

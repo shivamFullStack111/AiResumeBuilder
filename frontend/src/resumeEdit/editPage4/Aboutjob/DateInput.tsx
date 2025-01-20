@@ -5,6 +5,7 @@ interface DateComponentProps {
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  required?: boolean;
 }
 
 export const DateInput: React.FC<DateComponentProps> = (props) => {
@@ -25,6 +26,7 @@ export const DateInput: React.FC<DateComponentProps> = (props) => {
       >
         <p className="text-gray-400">{props.placeholder}</p>
         <input
+          required={props?.required}
           value={
             props?.value?.length == 10
               ? props?.value

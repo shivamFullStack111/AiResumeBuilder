@@ -13,6 +13,7 @@ import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Props {
   resume: ResumeType | null;
@@ -36,7 +37,7 @@ const AddSection: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const [languagesData, setlanguagesData] = useState<LanguagesType[]>([]);
   const [sectionsData, setsectionsData] = useState<SectionType[]>([]);
-  const { formating } = useSelector((state:RootState) => state.resume);
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
     if (props?.resume?.links?.length) {
@@ -59,6 +60,37 @@ const AddSection: React.FC<Props> = (props) => {
       languagesData.map((language) => language) || [],
       linksData.map((link) => link) || []
     );
+
+    // checking empty languages data
+    const inValidLanguageData = languagesData?.some(
+      (language: LanguagesType) => {
+        if (!language.name) {
+          toast.error("Please provide a language name");
+          return true;
+        }
+        if (!language.proficiency) {
+          toast.error("Please select language proficiency");
+          return true;
+        }
+
+        return false;
+      }
+    );
+
+    if (inValidLanguageData) return;
+
+    // cheaking links state
+
+    const isEmptyLinks = linksData.some((link) => {
+      if (!link) {
+        toast.error("Please provide a link");
+        return true;
+      }
+      return false;
+    });
+
+    if (isEmptyLinks) return;
+
     updateResumeinBackend({
       variables: {
         resumeData: {
@@ -179,6 +211,7 @@ const Languages: React.FC<LanguagesProps> = (props) => {
         props?.open.includes("language") && "pb-6  border-pink-400 "
       }  `}
     >
+      <Toaster />
       <div
         onClick={() => {
           if (props?.open.includes("language")) {
@@ -213,6 +246,7 @@ const Languages: React.FC<LanguagesProps> = (props) => {
                 className=" mb-2  grid grid-cols-12 items-center gap-5 w-full "
               >
                 <CustomInput
+                  required
                   placeholder="English"
                   value={language?.name}
                   onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -342,6 +376,7 @@ const Links: React.FC<LinksProps> = (props) => {
           {props?.linksData?.map((link: string, i: number) => (
             <div key={i} className=" flex gap-5 mb-2">
               <CustomInput
+                required
                 title={`Link ${i + 1}`}
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   props?.setlinksData((links) =>
@@ -433,6 +468,7 @@ const Custom_Section: React.FC<Custom_SectionProps> = (props) => {
                 <div className="w-full  h-full overflow-y-scroll  p-4 gap-4">
                   <div className=" flex gap-5">
                     <CustomInput
+                      required
                       placeholder="Write Heading"
                       title="Heading"
                       onchange={(e: React.ChangeEvent<HTMLInputElement>) => {

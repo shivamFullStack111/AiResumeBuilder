@@ -6,7 +6,7 @@ import { useLazyQuery } from "@apollo/client";
 import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
-import {  UPDATE_RESUME } from "../../utils";
+import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -40,7 +40,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
     },
   });
   const dispatch = useAppDispatch();
-  const { formating } = useSelector((state:RootState) => state.resume);
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   // setresume to usestate
   useEffect(() => {
@@ -59,7 +59,8 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
     }
   }, [resume]);
 
-  const handleContinue = () => {
+  const handleContinue = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     updateResumeInBackend({
       variables: {
         resumeData: {
@@ -94,7 +95,10 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5   grid-cols-6 gap-5 ">
-          <div className="col-span-4 w-full    h-full ">
+          <form
+            onSubmit={handleContinue}
+            className="col-span-4 w-full    h-full "
+          >
             <h3 className="mt-16 font-bold text-3xl text-slate-800">
               Let’s start with your header
             </h3>
@@ -126,12 +130,14 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 value={personalInfo?.firstName}
                 autofocus
                 title="name"
+                required={true}
                 placeholder="Enter your name"
               ></CustomInput>
               <CustomInput
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({ ...p, lastName: e.target.value }));
                 }}
+                required
                 value={personalInfo?.lastName}
                 title="last name"
                 placeholder="Enter your last name"
@@ -148,12 +154,14 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                     },
                   }));
                 }}
+                required
                 value={personalInfo?.address?.state}
                 title="state"
                 placeholder="Enter your state "
               ></CustomInput>
               <div className="flex gap-5">
                 <CustomInput
+                  required
                   onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setpersonalInfo((p) => ({
                       ...p,
@@ -168,6 +176,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                   placeholder="Enter your country "
                 ></CustomInput>{" "}
                 <CustomInput
+                  required
                   onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setpersonalInfo((p) => ({
                       ...p,
@@ -186,6 +195,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
             </div>
             <div className="grid grid-cols-2 gap-5 mt-5  w-full">
               <CustomInput
+                required
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({
                     ...p,
@@ -198,6 +208,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="Enter your phone number"
               ></CustomInput>
               <CustomInput
+                required
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({ ...p, email: e.target.value }));
                 }}
@@ -214,14 +225,14 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
               >
                 Back
               </div>
-              <div
-                onClick={handleContinue}
+              <button
+                type="submit"
                 className="px-16 rounded-3xl bg-blue-500  hover:bg-blue-600 cursor-pointer text-white font-semibold py-2"
               >
                 Continue
-              </div>
+              </button>
             </div>
-          </div>
+          </form>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
             <TemplateProvider formating={formating} resume={resume} />
           </div>

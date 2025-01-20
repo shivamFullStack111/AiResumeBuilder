@@ -108,7 +108,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
   return (
     <div
       onClick={onClick}
-      className={`template-container rounded-md  bg-white w-full p-6 pt-3 hide  ${text} ${props?.containerClassName}`}
+      className={`template-container rounded-md  bg-white  p-6 pt-3 hide  ${text} ${props?.containerClassName}`}
       ref={resumeRef}
       style={mainDivStyle}
       // className={`rounded-md bg-white w-full p-6 pt-3 hide max-w-[500px] ${text}`}

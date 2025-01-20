@@ -10,6 +10,7 @@ interface Props {
   value?: string;
   onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
+  required?: boolean;
 }
 const CustomInput: React.FC<Props> = ({
   title = "Title",
@@ -21,6 +22,7 @@ const CustomInput: React.FC<Props> = ({
   value,
   onchange,
   type,
+  required = false,
 }) => {
   const [focus, setfocus] = useState<boolean>(false);
 
@@ -34,6 +36,7 @@ const CustomInput: React.FC<Props> = ({
         {title}
       </p>
       <input
+        required={required}
         onFocus={() => setfocus(true)}
         onBlur={() => setfocus(false)}
         autoFocus={autofocus}

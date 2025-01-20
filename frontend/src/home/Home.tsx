@@ -110,7 +110,7 @@ const Home: React.FC = () => {
       userEmail: user?.primaryEmailAddress,
     },
   });
-  const { formating } = useSelector((state: RootState) => state.resume);
+  // const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
     if (data) {
@@ -214,7 +214,15 @@ const Home: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Template formating={formating} resume={resume} />
+                    <Template formating={{
+                      fontColor:'text-black',
+                      fontFamily:'',
+                      fontSize:8,
+                      headingSize:6,
+                      lineSpacing:1,
+                      paragraphSpreading:1,
+                      sectionSpacing:0.2
+                    }} resume={resume} />
                   </div>
                 </div>
                 <div className="mt-1 text-sm text-gray-500">Web Developer </div>

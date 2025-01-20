@@ -32,11 +32,20 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
   const dispatch = useAppDispatch();
   const { formating } = useSelector((state: RootState) => state.resume);
 
-
   let experienceNumber: number = Number(searchParam.get("experience")) - 1 || 0;
   if (experienceNumber == -1) experienceNumber = 0;
 
-  const handleContinue = () => {
+  const handleContinue = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    if (
+      !experience?.jobTitle ||
+      !experience?.companyName ||
+      !experience?.startDate ||
+      !experience?.location
+    ) {
+      return;
+    }
     const updatedWorkExperience = [...(resume?.workExperience || [])];
 
     if (experience) {
@@ -91,20 +100,21 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
     }
   }, [resume, experienceNumber]);
 
-  useEffect(() => {
-    console.log(experience);
-  }, [experience]);
   return (
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5 grid-cols-6 ">
-          <div className="col-span-4 w-full    h-full ">
+          <form
+            onSubmit={handleContinue}
+            className="col-span-4 w-full    h-full "
+          >
             <h3 className="mt-16 font-bold text-3xl text-slate-800">
               Let’s work on your experience
             </h3>
             <p className="mt-2">Start with your most recent job first.</p>
             <div className="grid grid-cols-2 gap-5  w-full">
               <CustomInput
+                required
                 onchange={(e: ChangeEvent<HTMLInputElement>) => {
                   setexperience((p) => ({
                     ...p,
@@ -117,6 +127,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="Senior software Engineer"
               ></CustomInput>
               <CustomInput
+                required
                 onchange={(e: ChangeEvent<HTMLInputElement>) => {
                   setexperience((p) => ({
                     ...p,
@@ -130,6 +141,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
             </div>
             <div className="grid mt-5 gap-4  w-full">
               <CustomInput
+                required
                 onchange={(e: ChangeEvent<HTMLInputElement>) => {
                   setexperience((p) => ({
                     ...p,
@@ -143,6 +155,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
             </div>
             <div className="grid grid-cols-2 gap-5 mt-5  w-full">
               <DateInput
+                required
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   setexperience((p) => ({
                     ...p,
@@ -187,20 +200,21 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
             </label>
 
             <div className="flex mt-10  justify-between">
-              <div
+              <button
+                type="submit"
                 onClick={() => navigate(-1)}
                 className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
               >
                 Back
-              </div>
-              <div
-                onClick={handleContinue}
+              </button>
+              <button
+                type="submit"
                 className="px-16 rounded-3xl bg-blue-500  hover:bg-blue-600 cursor-pointer text-white font-semibold py-2"
               >
                 Continue
-              </div>
+              </button>
             </div>
-          </div>
+          </form>
           <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
             <TemplateProvider formating={formating} resume={resume} />
           </div>{" "}
