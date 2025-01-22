@@ -18,8 +18,8 @@ export const UPDATE_RESUME = gql`
   }
 `;
 
-export const backendUrl ="http://localhost:5050"
-// export const backendUrl ="https://airesumebuilder-433g.onrender.com"
+// export const backendUrl ="http://localhost:5050"
+export const backendUrl ="https://airesumebuilder-433g.onrender.com"
 
 
 export interface FormatingType {
