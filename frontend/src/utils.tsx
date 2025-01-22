@@ -18,6 +18,10 @@ export const UPDATE_RESUME = gql`
   }
 `;
 
+// export const backendUrl ="http://localhost:5050"
+export const backendUrl ="https://airesumebuilder-433g.onrender.com"
+
+
 export interface FormatingType {
   fontSize: number;
   headingSize: number;
@@ -26,6 +30,7 @@ export interface FormatingType {
   lineSpacing: number;
   fontFamily: string;
   fontColor:string
+  imageSize: number;
 }
 
 export const defaultFormating = {

@@ -25,10 +25,21 @@ const Complete: React.FC<CompleteProps> = (props) => {
   }>({ handlePrint: () => {}, handleDownloadResume: () => {} });
   // const [formating, setformating] = useState(defaultFormating);
   const { formating } = useSelector((state: RootState) => state.resume);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props) props?.sethiddenSideBar(true);
   }, [props]);
+
+  useEffect(() => {
+    if (props?.resume?.templateData?.color)
+      dispatch(
+        setformating({
+          ...formating,
+          fontColor: props?.resume?.templateData?.color,
+        })
+      );
+  }, [props?.resume, dispatch]);
 
   return (
     <div className=" overflow-y-scroll min-h-screen bg-blue-900 flex justify-center ">
@@ -135,7 +146,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-green-600" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-green-600" &&
+                  "border-2 border-gray-300"
                 } bg-green-500`}
               ></div>
               <div
@@ -145,7 +157,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-blue-600" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-blue-600" &&
+                  "border-2 border-gray-300"
                 } bg-blue-500`}
               ></div>
               <div
@@ -155,7 +168,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-black" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-black" &&
+                  "border-2 border-gray-300"
                 } bg-black`}
               ></div>
               <div
@@ -165,7 +179,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-pink-600" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-pink-600" &&
+                  "border-2 border-gray-300"
                 } bg-pink-500  `}
               ></div>
               <div
@@ -175,7 +190,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-violet-600" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-violet-600" &&
+                  "border-2 border-gray-300"
                 } bg-violet-500`}
               ></div>
               <div
@@ -185,7 +201,8 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                   )
                 }
                 className={`h-8 w-8 rounded-full cursor-pointer hover:border-2  ${
-                  formating?.fontColor == "text-orange-600" && "border-2 border-gray-300"
+                  formating?.fontColor == "text-orange-600" &&
+                  "border-2 border-gray-300"
                 } bg-orange-500`}
               ></div>
             </div>
@@ -352,6 +369,31 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
                 min={0}
                 max={5}
                 step={0.2}
+                type="range"
+              />
+            </div>
+
+            <p className="w-full border border-dashed border-gray-400 mt-6 mb-6"></p>
+
+            <p className="text-white font- font-bold text-sm ">
+              Image Formatting
+            </p>
+            <div className="mt-6">
+              <p className="text-white font-semibold text-sm ">Image Size</p>
+              <input
+                value={formating?.imageSize}
+                onChange={(e) =>
+                  dispatch(
+                    setformating({
+                      ...formating,
+                      imageSize: Number(e.target.value),
+                    })
+                  )
+                }
+                placeholder="."
+                className="mt-1 w-full h-[2px]"
+                min={30}
+                max={200}
                 type="range"
               />
             </div>

@@ -30,6 +30,9 @@ const GET_RESUME = gql`
       templateData {
         templateid
         color
+        withPhotos
+        withGraphics
+        columns
       }
       personalInfo {
         fullName
@@ -46,6 +49,7 @@ const GET_RESUME = gql`
 
       targetCountry
       links
+      imageUrl
       experience
       education {
         degree

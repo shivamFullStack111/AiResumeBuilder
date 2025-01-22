@@ -14,9 +14,13 @@ const resumeSchema = new mongoose.Schema(
     currentPath: {
       type: String,
     },
+    imageUrl: String,
     templateData: {
       templateid: String,
       color: String,
+      withPhotos: Boolean,
+      withGraphics: Boolean,
+      columns: Number,
     },
     links: [
       {

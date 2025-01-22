@@ -114,25 +114,56 @@ export const Template: React.FC<TemplateProps> = (props) => {
       // className={`rounded-md bg-white w-full p-6 pt-3 hide max-w-[500px] ${text}`}
     >
       {/* basic details  */}
-      <div
-        onClick={() =>
-          navigate(
-            `?page=4&templateid=${props?.resume?._id}&edit=basic-details`
-          )
-        }
-        className="border-2 border-white cursor-pointer hover:border-yellow-400"
-      >
-        <p
-          className={`text-[115%] text-gray-800 font-bold ${formating?.fontColor}`}
-        >
-          {resume?.personalInfo?.fullName?.split("-")[0]}{" "}
-          {resume?.personalInfo?.fullName?.split("-")[1]}
-        </p>
-        <p className="text-[53%] text-gray-500">
-          {resume?.personalInfo?.phone} {resume?.personalInfo?.address?.state}{" "}
-          {resume?.personalInfo?.address?.country}{" "}
-          {resume?.personalInfo?.address?.pincode}{" "}
-        </p>
+      <div className={`flex gap-3 items-center`}>
+        {resume?.templateData?.withPhotos && (
+          <>
+            <img
+              style={{
+                height: (formating?.imageSize ?? 30) + 10,
+                width: formating?.imageSize ?? 26,
+              }}
+              className="h-20 w-16 border border-gray-400 border-dotted"
+              src={resume?.imageUrl || "/logo5.png"}
+              alt=""
+            />
+          </>
+        )}
+        <div>
+          <div
+            onClick={() =>
+              navigate(
+                `?page=4&templateid=${props?.resume?._id}&edit=basic-details`
+              )
+            }
+            className="border-2 border-white cursor-pointer hover:border-yellow-400"
+          >
+            <p
+              className={`text-[115%] text-gray-800 font-bold ${formating?.fontColor}`}
+            >
+              {resume?.personalInfo?.fullName?.split("-")[0]}{" "}
+              {resume?.personalInfo?.fullName?.split("-")[1]}
+            </p>
+            <p className="text-[53%] text-gray-500">
+              {resume?.personalInfo?.phone}{" "}
+              {resume?.personalInfo?.address?.state}{" "}
+              {resume?.personalInfo?.address?.country}{" "}
+              {resume?.personalInfo?.address?.pincode}{" "}
+            </p>
+          </div>
+          {resume?.links?.map((link) => (
+            <div className="mb-[3px] ">
+              <div className="flex gap-1 leading-tight items-center">
+                <p className="h-[3px] w-[3px] rounded-full bg-gray-500"></p>
+                <a
+                  href={link}
+                  className="text-[55%] text-blue-500   font-semibold mb-[3px]"
+                >
+                  {link}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       {/* summary section  */}
       {resume?.professionalSummary && (
@@ -339,7 +370,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
       ) : null}
 
       {/* Links  */}
-      {resume?.links?.length ? (
+      {/* {resume?.links?.length ? (
         <div
           onClick={() =>
             navigate(
@@ -369,7 +400,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
             </div>
           ))}
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };

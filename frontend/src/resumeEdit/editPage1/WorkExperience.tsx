@@ -1,10 +1,9 @@
-import {  useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import { UPDATE_RESUME } from "../../utils";
-
 
 export interface ResumeType {
   _id?: string;
@@ -25,10 +24,14 @@ export interface ResumeType {
   templateData?: {
     templateid?: string;
     color?: string;
+    withPhotos?: boolean;
+    withGraphics?: boolean;
+    columns?: number;
   };
   links?: string[];
 
   userEmail?: string;
+  imageUrl?: string;
   currentPath?: string;
   skills?: string[];
   onStep?: number;

@@ -53,11 +53,11 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
 
   const handleContinue = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(works?.length&&!works[works?.length-1]) {
-       toast.error('Course cannot be empty')
-       console.log(works?.length,works[works?.length-1])
-       return
-    };
+    if (works?.length && !works[works?.length - 1]) {
+      toast.error("Course cannot be empty");
+      console.log(works?.length, works[works?.length - 1]);
+      return;
+    }
     const updatedEducation:
       | {
           degree: string;
@@ -139,21 +139,23 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
               list them.
             </p>
             <div className="flex gap-3 justify-end  ">
-              <div
-                className=" flex gap-2 py-[6px] px-6 items-center text-pink-400 hover:text-pink-500 border-pink-400 cursor-pointer hover:border-pink-500 hover:shadow-xl bg-white border rounded-md"
-                onClick={() =>
-                  navigate(
-                    `?page=4&templateid=ghfh457t88ygurhg&edit=experience-details&experience=${
-                      resume?.workExperience?.length
-                        ? resume?.workExperience?.length + 1
-                        : 1
-                    }`
-                  )
-                }
-              >
-                <FaLongArrowAltLeft />
-                <p> Add more experience</p>
-              </div>
+              {resume?.experience !== "no experience" && (
+                <div
+                  className=" flex gap-2 py-[6px] px-6 items-center text-pink-400 hover:text-pink-500 border-pink-400 cursor-pointer hover:border-pink-500 hover:shadow-xl bg-white border rounded-md"
+                  onClick={() =>
+                    navigate(
+                      `?page=4&templateid=ghfh457t88ygurhg&edit=experience-details&experience=${
+                        resume?.workExperience?.length
+                          ? resume?.workExperience?.length + 1
+                          : 1
+                      }`
+                    )
+                  }
+                >
+                  <FaLongArrowAltLeft />
+                  <p> Add more experience</p>
+                </div>
+              )}
               <div
                 className=" flex gap-2 py-[6px] px-6 items-center bg-pink-400 cursor-pointer hover:bg-pink-500 hover:shadow-xl text-gray-100 border rounded-md"
                 onClick={() => {

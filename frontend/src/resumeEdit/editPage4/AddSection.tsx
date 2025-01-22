@@ -7,7 +7,7 @@ import { BiPencil } from "react-icons/bi";
 import { LuChevronUp } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { ResumeType } from "../editPage1/WorkExperience";
-import { useLazyQuery } from "@apollo/client";
+import { empty, useLazyQuery } from "@apollo/client";
 import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
@@ -80,7 +80,6 @@ const AddSection: React.FC<Props> = (props) => {
     if (inValidLanguageData) return;
 
     // cheaking links state
-
     const isEmptyLinks = linksData.some((link) => {
       if (!link) {
         toast.error("Please provide a link");
@@ -90,6 +89,21 @@ const AddSection: React.FC<Props> = (props) => {
     });
 
     if (isEmptyLinks) return;
+
+    // section empty state checking
+    const isEmptySection = sectionsData.some((section) => {
+      if (!section?.heading) {
+        toast.error("Please provide a section heading");
+        return true;
+      }
+      if (!section?.summary) {
+        toast.error("Please provide a section summary");
+        return true;
+      }
+      return false;
+    });
+
+    if (isEmptySection) return;
 
     updateResumeinBackend({
       variables: {

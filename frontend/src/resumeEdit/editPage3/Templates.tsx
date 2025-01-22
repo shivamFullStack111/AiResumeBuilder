@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import { UPDATE_RESUME } from "../../utils";
+import { Template } from "../../TemplateProvider";
 
 interface Props {
   resume?: ResumeType | null;
@@ -14,12 +15,26 @@ interface Props {
 const Templates: React.FC<Props> = ({ resume }) => {
   const [updateResumeInBackend] = useLazyQuery(UPDATE_RESUME);
   const [color, setcolor] = useState<string>("");
-  const [columns, setcolumns] = useState<string[]>([]);
-  const [graphics, setgraphics] = useState<string[]>([]);
-  const [photo, setphoto] = useState<string[]>([]);
+  // const [columns, setcolumns] = useState<number>(1);
+  // const [graphics, setgraphics] = useState<string[]>([]);
+  const [photo, setphoto] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (resume) {
+      if (resume?.templateData?.withPhotos)
+        setphoto(resume?.templateData?.withPhotos);
+      if (resume?.templateData?.color) setcolor(resume?.templateData?.color);
+
+      console.log(resume?.templateData);
+
+      if (resume?.templateData?.withPhotos)
+        setphoto(resume?.templateData?.withPhotos || false);
+      else setphoto(false);
+    }
+  }, [resume]);
 
   const handleContinue = (templateId: string) => {
     dispatch(
@@ -27,6 +42,7 @@ const Templates: React.FC<Props> = ({ resume }) => {
         templateData: {
           templateid: templateId,
           color: color,
+          withPhotos: photo,
         },
       })
     );
@@ -37,6 +53,7 @@ const Templates: React.FC<Props> = ({ resume }) => {
           templateData: {
             templateid: templateId,
             color: color,
+            withPhotos: photo,
           },
         },
         resumeid: resume?._id,
@@ -55,7 +72,7 @@ const Templates: React.FC<Props> = ({ resume }) => {
         <div className="text-3xl flex justify-center gap-2 items-center mt-6 font-bold text-gray-700 ">
           <img className="h-16 w-12" src="/logo4.png" alt="" />{" "}
           <div className="flex flex-col mt-4 justify-center ">
-            <p>Templates we recommend for you</p>{" "}
+            <p>Templates we recommend for you </p>{" "}
             <p className="mt-3 text-gray-600 font-semibold text-center text-xl">
               You can always change your template later.
             </p>
@@ -66,21 +83,14 @@ const Templates: React.FC<Props> = ({ resume }) => {
           <div className="w-[75%] max-w-[1000px] mt-8 flex px-5  gap-2 rounded-lg border border-gray-300 shadow-lg shadow-blue-100 py-3  justify-center items-center bg-gray-200">
             <p className="text-sm col-span-1  font-semibold">Filters:</p>
             <div className="grid grid-cols-10 gap-3 w-full">
-              <div className="h-10 w-full col-span-2 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
+              <div className="h-10 w-full col-span-6 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
                 <div className="flex px-2 relative w-full justify-between">
                   <p className="text-sm">Headshot</p>
                   <FaChevronDown className="ml-auto group-hover:rotate-180 transition-all duration-300 text-gray-700 text-lg"></FaChevronDown>
                   <div className="absolute z-30 w-full -bottom-[85px]  hidden transition-all group-hover:block  bg-white border border-gray-400 rounded-md left-0">
                     <div
                       onClick={() => {
-                        if (!photo.includes("with-photo"))
-                          setphoto((prev) => [...prev, "with-photo"]);
-                        else {
-                          const newData = photo.filter(
-                            (p) => p !== "with-photo"
-                          );
-                          setphoto(newData);
-                        }
+                        setphoto(true);
                       }}
                       className="flex gap-2 items-center cursor-pointer p-2 text-sm"
                     >
@@ -89,20 +99,13 @@ const Templates: React.FC<Props> = ({ resume }) => {
                         placeholder="head"
                         className="h-4 w-4"
                         type="checkbox"
-                        checked={photo.includes("with-photo")}
+                        checked={photo}
                       />
                       <p>With Photo</p>
                     </div>
                     <div
                       onClick={() => {
-                        if (!photo.includes("without-photo"))
-                          setphoto((prev) => [...prev, "without-photo"]);
-                        else {
-                          const newData = photo.filter(
-                            (p) => p !== "without-photo"
-                          );
-                          setphoto(newData);
-                        }
+                        setphoto(false);
                       }}
                       className="flex gap-2 items-center cursor-pointer p-2 text-sm"
                     >
@@ -111,14 +114,14 @@ const Templates: React.FC<Props> = ({ resume }) => {
                         placeholder="head"
                         className="h-4 w-4"
                         type="checkbox"
-                        checked={photo.includes("without-photo")}
+                        checked={!photo}
                       />
                       <p>Without Photo</p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="h-10 w-full col-span-2 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
+              {/* <div className="h-10 w-full col-span-2 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
                 <div className="flex px-2 relative w-full justify-between">
                   <p className="text-sm">Graphics</p>
                   <FaChevronDown className="ml-auto group-hover:rotate-180 transition-all duration-300 text-gray-700 text-lg"></FaChevronDown>
@@ -221,32 +224,32 @@ const Templates: React.FC<Props> = ({ resume }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="w-full col-span-3 flex px-2   items-center">
+              <div className="w-full col-span-4 flex px-2   items-center">
                 <p className="font-semibold text-sm">Colors:</p>
                 <div
-                  onClick={() => setcolor("bg-red-400")}
+                  onClick={() => setcolor("text-red-400")}
                   className={`w-9 h-9 border-4  cursor-pointer ${
-                    color == "bg-red-400" && "border-blue-300"
+                    color == "text-red-400" && "border-blue-300"
                   }  rounded-full bg-red-400 ml-2`}
                 ></div>
                 <div
-                  onClick={() => setcolor("bg-gray-400")}
+                  onClick={() => setcolor("text-gray-400")}
                   className={`w-9 h-9 border-4  cursor-pointer ${
-                    color == "bg-gray-400" && "border-blue-300"
+                    color == "text-gray-400" && "border-blue-300"
                   }  rounded-full bg-gray-400 ml-2`}
                 ></div>
                 <div
-                  onClick={() => setcolor("bg-green-400")}
+                  onClick={() => setcolor("text-green-400")}
                   className={`w-9 h-9 border-4  cursor-pointer ${
-                    color == "bg-green-400" && "border-blue-300"
+                    color == "text-green-400" && "border-blue-300"
                   }  rounded-full bg-green-400 ml-2`}
                 ></div>
                 <div
-                  onClick={() => setcolor("bg-purple-400")}
+                  onClick={() => setcolor("text-purple-400")}
                   className={`w-9 h-9 border-4  cursor-pointer ${
-                    color == "bg-purple-400" && "border-blue-300"
+                    color == "text-purple-400" && "border-blue-300"
                   }  rounded-full bg-purple-400 ml-2`}
                 ></div>
               </div>
@@ -256,10 +259,10 @@ const Templates: React.FC<Props> = ({ resume }) => {
       </div>
       <div className=" flex mxn justify-center  w-full ">
         <div className={`w-full max-w-[1000px] px-3 mt-[220px]   `}>
-          <p className="text-sm">Showing all templates (43)</p>
+          <p className="text-sm">Showing all templates (1)</p>
           <div className="grid w-full mt-4 gap-8 grid-cols-3">
             <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
+              <div className="w-full absolute z-50 flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
                 <button
                   onClick={() => handleContinue("frhjgjrhg4568gfhb")}
                   type="button"
@@ -269,72 +272,18 @@ const Templates: React.FC<Props> = ({ resume }) => {
                   Choose template
                 </button>
               </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
-            </div>
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
-              </div>
+              <div className="w-full h-full absolute z-40"></div>
+              {resume && (
+                <Template
+                  resume={{
+                    ...resume,
+                    templateData: {
+                      ...resume?.templateData,
+                      withPhotos: photo,
+                    },
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

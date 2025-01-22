@@ -6,8 +6,10 @@ import { useLazyQuery } from "@apollo/client";
 import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
-import { UPDATE_RESUME } from "../../utils";
+import { backendUrl, UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
 
 interface Props {
   resume: ResumeType | null;
@@ -28,6 +30,7 @@ interface PersonalInfo {
 const BasicDetails: React.FC<Props> = ({ resume }) => {
   const navigate = useNavigate();
   const [updateResumeInBackend, { error }] = useLazyQuery(UPDATE_RESUME);
+  const { user } = useUser();
   const [personalInfo, setpersonalInfo] = useState<PersonalInfo>({
     firstName: "",
     lastName: "",
@@ -39,8 +42,11 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
       pincode: "",
     },
   });
+
   const dispatch = useAppDispatch();
   const { formating } = useSelector((state: RootState) => state.resume);
+  const [image, setimage] = useState<File | undefined>(undefined);
+  const [imageUploading, setimageUploading] = useState(false);
 
   // setresume to usestate
   useEffect(() => {
@@ -88,7 +94,9 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
       );
     }
 
-    navigate(`?page=4&templateid=${resume?._id}&edit=experience-details`);
+    if (resume?.experience == "no experience")
+      navigate(`?page=4&templateid=${resume?._id}&edit=education-details`);
+    else navigate(`?page=4&templateid=${resume?._id}&edit=experience-details`);
   };
 
   return (
@@ -106,23 +114,77 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
               Include your full name and at least one way for employers to reach
               you.
             </p>
-            <div className="mt-5 flex gap-3 items-center">
-              <img
-                src={"/logo5.png"}
-                alt="user"
-                className="w-24 h-28 border-dashed border border-gray-500"
-              ></img>
-              <div className="flex text-[12px] flex-col justify-center">
-                <p>Add a photo to your resume</p>
-                <button
-                  type="button"
-                  className="py-2 bg-pink-400 text-white text-sm hover:bg-pink-500 mt-1 px-10 rounded-3xl"
-                >
-                  Add a photo
-                </button>
+            {resume?.templateData?.withPhotos && (
+              <div className="mt-5 flex gap-3 items-center">
+                <div className="w-24 h-28 border-dashed border flex justify-center items-center border-gray-500">
+                  {imageUploading ? (
+                    <p className="text-[10px] font-semibold text-blue-500">
+                      Uploading...
+                    </p>
+                  ) : (
+                    <img
+                      src={
+                        image
+                          ? URL.createObjectURL(image)
+                          : resume?.imageUrl
+                          ? resume?.imageUrl
+                          : "/logo5.png"
+                      }
+                      className="w-full h-full"
+                      alt="user"
+                    ></img>
+                  )}
+                </div>
+
+                <div className="flex text-[12px] flex-col justify-center">
+                  <p>Add a photo to your resume</p>
+                  <input
+                    onChange={async (
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => {
+                      setimageUploading(true);
+                      if (e?.target?.files) {
+                        setimage(e?.target?.files[0]);
+                        const formData = new FormData();
+                        formData.append("file", e.target?.files[0]);
+                        if (resume?._id) {
+                          formData.append("resumeId", resume?._id);
+                        }
+                        if (user?.primaryEmailAddress?.emailAddress) {
+                          formData.append(
+                            "userEmail",
+                            user.primaryEmailAddress.emailAddress
+                          );
+                        }
+
+                        const res = await axios.post(
+                          backendUrl + "/upload-image",
+                          formData
+                        );
+                        if (res.data?.success) {
+                          dispatch(
+                            updateResume({ imageUrl: res.data?.imageUrl })
+                          );
+                        }
+                        setimageUploading(false);
+                      }
+                      setimageUploading(false);
+                    }}
+                    id="image"
+                    placeholder="Your image"
+                    type="file"
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="image"
+                    className="py-2 cursor-pointer bg-pink-400 text-white text-sm hover:bg-pink-500 mt-1 px-10 rounded-3xl"
+                  >
+                    Add a photo
+                  </label>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-5  w-full">
+            )}
+            <div className="grid grid-cols-2 mt-4 gap-5  w-full">
               <CustomInput
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({ ...p, firstName: e.target.value }));

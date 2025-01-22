@@ -10,6 +10,7 @@ type Resume {
   currentPath:String
   onStep:Int
   hobbies: [String]
+  imageUrl:String
   workExperience: [WorkExperience]
   education: [Education]
   projects: [String]
@@ -111,12 +112,19 @@ input AddressInput {
 type TemplateData {
   templateid:String
   color:String
+  withPhotos: Boolean
+  withGraphics: Boolean
+  columns: Int
 }
 
 input TemplateDataInput {
   templateid:String
   color:String
+  withPhotos: Boolean,
+  withGraphics: Boolean,
+  columns: Int,
 }
+
 
 input ResumeInput {
   templateData:TemplateDataInput
@@ -125,6 +133,7 @@ input ResumeInput {
   experience:String
   userEmail: String
   skills: [String]
+  imageUrl:String
   onStep:Int
   hobbies: [String]
   workExperience: [WorkExperienceInput]
