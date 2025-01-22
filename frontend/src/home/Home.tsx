@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import LoginedProvider from "../protectedRoutes/LoginedProvider";
 import { IoIosAddCircle } from "react-icons/io";
@@ -13,6 +13,8 @@ import { setMyResumes } from "../store/slices/resumeSlice";
 import { useSelector } from "react-redux";
 import { Template } from "../TemplateProvider";
 import { DELETE_RESUME } from "../utils";
+
+import { TbLoader } from "react-icons/tb";
 
 const REGISTER_USER = gql`
   mutation ($name: String, $email: String, $phoneNumber: String) {
@@ -105,8 +107,10 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [deleteResume] = useLazyQuery(DELETE_RESUME);
   const { myResumes } = useSelector((state: RootState) => state.resume);
+  const [activePage, setactivePage] = useState(1);
 
-  const [getUserAllResumes, { data }] = useLazyQuery(GET_USER_ALL_RESUMES);
+  const [getUserAllResumes, { data, loading: getUserResume_Loading }] =
+    useLazyQuery(GET_USER_ALL_RESUMES);
   // const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
@@ -133,6 +137,7 @@ const Home: React.FC = () => {
           userEmail: user?.primaryEmailAddress?.emailAddress,
         },
       });
+
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -166,7 +171,7 @@ const Home: React.FC = () => {
       <div className="w-full mxn mt-10 font-sans">
         <div>
           <p className="text-2xl font-semibold text-gray-600 leading-none">
-            Hey {user?.fullName}
+            Hey {myResumes?.length} {user?.fullName}
           </p>
           <p className="text-xl font-semibold text-gray-500">
             your work history
@@ -191,66 +196,124 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full  mt-2 flex justify-center">
           <div className="grid grid-cols-3 w-[50%] ">
-            {myResumes?.map((resume: ResumeType, i: number) => (
-              <div key={i} className="flex mt-4 flex-col items-center">
-                <div className="bg-white h-52 overflow-y-scroll flex justify-center overflow-hidden group items-center w-40 rounded-md text-gray-400 hover:text-gray-600 border-2 cursor-pointer border-gray-400 relative  transition-all duration-200 hover:border-gray-600 ">
-                  <div className="absolute p-1  top-0 right-0 -translate-y-10 group-hover:translate-y-0 transition-all duration-300   w-full flex justify-end gap-2">
-                    <MdDelete
-                      onClick={() => {
-                        deleteResume({
-                          variables: {
-                            resumeId: resume?._id,
-                          },
-                        });
+            {getUserResume_Loading && (
+              <div className="flex  mt-4 flex-col items-center">
+                <div className="bg-gray-300 flex justify-center items-center animate-pulse h-52 w-40 rounded-md ">
+                  <TbLoader className="animate-spin text-xl" />
+                </div>
+              </div>
+            )}
+            {getUserResume_Loading && (
+              <div className="flex  mt-4 flex-col items-center">
+                <div className="bg-gray-300 flex justify-center items-center animate-pulse h-52 w-40 rounded-md ">
+                  <TbLoader className="animate-spin text-xl" />
+                </div>{" "}
+              </div>
+            )}
+            {getUserResume_Loading && (
+              <div className="flex  mt-4 flex-col items-center">
+                <div className="bg-gray-300 flex justify-center items-center animate-pulse h-52 w-40 rounded-md ">
+                  <TbLoader className="animate-spin text-xl" />
+                </div>{" "}
+              </div>
+            )}
+            {!getUserResume_Loading && (
+              <>
+                {" "}
+                {myResumes
+                  ?.slice((activePage - 1) * 2, (activePage - 1) * 2 + 2)
+                  .map((resume: ResumeType, i: number) => (
+                    <div key={i} className="flex mt-4 flex-col items-center">
+                      <div className="bg-white h-52 overflow-y-scroll flex justify-center overflow-hidden group items-center w-40 rounded-md text-gray-400 hover:text-gray-600 border-2 cursor-pointer border-gray-400 relative  transition-all duration-200 hover:border-gray-600 ">
+                        <div className="absolute p-1  top-0 right-0 -translate-y-10 group-hover:translate-y-0 transition-all duration-300   w-full flex justify-end gap-2">
+                          <MdDelete
+                            onClick={() => {
+                              deleteResume({
+                                variables: {
+                                  resumeId: resume?._id,
+                                },
+                              });
 
-                        dispatch(
-                          setMyResumes(
-                            myResumes.filter((res) => res?._id !== resume?._id)
-                          )
-                        );
-                      }}
-                      className="bg-red-400 text-white p-1 rounded-full text-2xl"
-                    />
-                    <MdModeEditOutline
-                      onClick={() => {
-                        navigate(`/resume/${resume?._id}/edit?page=1`);
-                      }}
-                      className="bg-blue-400 text-white p-1 rounded-full text-2xl"
-                    />
-                  </div>
-                  <div>
-                    <Template
-                      formating={{
-                        fontColor: "text-black",
-                        fontFamily: "",
-                        fontSize: 8,
-                        headingSize: 6,
-                        lineSpacing: 1,
-                        paragraphSpreading: 1,
-                        sectionSpacing: 0.2,
-                        imageSize: 14,
-                      }}
-                      resume={resume}
-                    />
+                              dispatch(
+                                setMyResumes(
+                                  myResumes.filter(
+                                    (res) => res?._id !== resume?._id
+                                  )
+                                )
+                              );
+                            }}
+                            className="bg-red-400 text-white p-1 rounded-full text-2xl"
+                          />
+                          <MdModeEditOutline
+                            onClick={() => {
+                              navigate(`/resume/${resume?._id}/edit?page=1`);
+                            }}
+                            className="bg-blue-400 text-white p-1 rounded-full text-2xl"
+                          />
+                        </div>
+                        <div>
+                          <Template
+                            formating={{
+                              fontColor: "text-black",
+                              fontFamily: "",
+                              fontSize: 8,
+                              headingSize: 6,
+                              lineSpacing: 1,
+                              paragraphSpreading: 1,
+                              sectionSpacing: 0.2,
+                              imageSize: 14,
+                            }}
+                            resume={resume}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-1 text-sm text-gray-500">
+                        Web Developer{" "}
+                      </div>
+                    </div>
+                  ))}
+                <div
+                  onClick={() => {
+                    if (!createResume_loading) handleCreateResume();
+                  }}
+                  className="flex mt-4 flex-col items-center"
+                >
+                  <div className="bg-white h-52 flex justify-center items-center w-40 rounded-md text-gray-400 hover:text-gray-600 border-2 cursor-pointer border-gray-400  transition-all duration-200 hover:border-gray-600 ">
+                    {!createResume_loading ? (
+                      <IoIosAddCircle className=" text-4xl"></IoIosAddCircle>
+                    ) : (
+                      <AiOutlineLoading3Quarters className=" text-3xl animate-spin text-pink-400"></AiOutlineLoading3Quarters>
+                    )}
                   </div>
                 </div>
-                <div className="mt-1 text-sm text-gray-500">Web Developer </div>
-              </div>
-            ))}
-            <div
-              onClick={() => {
-                if (!createResume_loading) handleCreateResume();
-              }}
-              className="flex mt-4 flex-col items-center"
-            >
-              <div className="bg-white h-52 flex justify-center items-center w-40 rounded-md text-gray-400 hover:text-gray-600 border-2 cursor-pointer border-gray-400  transition-all duration-200 hover:border-gray-600 ">
-                {!createResume_loading ? (
-                  <IoIosAddCircle className=" text-4xl"></IoIosAddCircle>
-                ) : (
-                  <AiOutlineLoading3Quarters className=" text-3xl animate-spin text-pink-400"></AiOutlineLoading3Quarters>
-                )}
-              </div>
+              </>
+            )}
+            <div className="flex col-span-3 justify-end gap-2 w-full items-center">
+              {Array.from({ length: Math.round(myResumes?.length / 2) }).map(
+                (_, i) => {
+                  const index = i + 1;
+                  return (
+                    <>
+                      {" "}
+                      <div
+                        onClick={() => {
+                          setactivePage(index);
+                        }}
+                        key={index}
+                        className={
+                          activePage !== index
+                            ? "text-pink-400 border-pink-400 border bg-white hover:text-white hover:bg-pink-500 mt-6  min-w-8 h-8 flex justify-center items-center cursor-pointer font-semibold "
+                            : "bg-pink-400 text-white hover:bg-pink-500 mt-6  min-w-8 h-8 flex justify-center items-center cursor-pointer font-semibold "
+                        }
+                      >
+                        {index}
+                      </div>
+                    </>
+                  );
+                }
+              )}
             </div>
+
             <div className="ml-auto"></div>
           </div>
         </div>

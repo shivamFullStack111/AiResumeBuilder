@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import { UPDATE_RESUME } from "../../utils";
+// import { useSelector } from "react-redux";
 
 export interface ResumeType {
   _id?: string;
@@ -77,6 +78,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
   const [updateResumeinBackend] = useLazyQuery(UPDATE_RESUME);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  // const { myResumes } = useSelector((state: RootState) => state.resume);
 
   const handleUpdateResume = async () => {
     const currentPath = window.location.href;
@@ -96,6 +98,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
       <img src="/logo2.png" className="h-14 w-[60px]" alt="" />
       <p className="text-3xl font-bold text-gray-700 mt-6">
         How much work experience do you have?
+        {/* {myResumes?.length} */}
       </p>
       <p className="mt-2 text-gray-600 font-semibold text-xl">
         We can give you better advice and guidance if we know.

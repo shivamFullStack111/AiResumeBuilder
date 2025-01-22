@@ -7,8 +7,9 @@ import WorkExperience from "./editPage1/WorkExperience";
 import CountryPage from "./editPage2/CountryPage";
 import Templates from "./editPage3/Templates";
 import MainEditing from "./editPage4/MainEditing";
-import { setResume } from "../store/slices/resumeSlice";
+import { setMyResumes, setResume } from "../store/slices/resumeSlice";
 import { RootState, useAppDispatch, useAppSelector } from "../store/store";
+import { useSelector } from "react-redux";
 
 const GET_RESUME = gql`
   query ($resumeid: String) {
@@ -83,6 +84,7 @@ const EditResume: React.FC = () => {
   const param = useParams();
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
+  const { myResumes } = useSelector((state: RootState) => state.resume);
 
   const { data, loading } = useQuery(GET_RESUME, {
     variables: { resumeid: param?.resumeid },
@@ -92,8 +94,14 @@ const EditResume: React.FC = () => {
   useEffect(() => {
     if (data) {
       dispatch(setResume(data?.getResume));
+      if (myResumes?.length) {
+        const isExist = myResumes?.find(
+          (res) => res._id == data?.getResume?._id
+        );
+        if (!isExist) dispatch(setMyResumes([...myResumes, data?.getResume]));
+      }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, myResumes]);
 
   const page: string | null = searchParam.get("page");
 
