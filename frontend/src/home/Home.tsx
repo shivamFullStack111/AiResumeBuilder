@@ -4,7 +4,7 @@ import LoginedProvider from "../protectedRoutes/LoginedProvider";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
 import { useUser } from "@clerk/clerk-react";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { ResumeType } from "../resumeEdit/editPage1/WorkExperience";
