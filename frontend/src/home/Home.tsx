@@ -105,6 +105,7 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [deleteResume] = useLazyQuery(DELETE_RESUME);
   const { myResumes } = useSelector((state: RootState) => state.resume);
+
   const { data } = useQuery(GET_USER_ALL_RESUMES, {
     variables: {
       userEmail: user?.primaryEmailAddress,
@@ -113,10 +114,11 @@ const Home: React.FC = () => {
   // const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
-    if (data) {
+    console.log(data);
+    if (data?.getUserAllResumes?.length) {
       dispatch(setMyResumes(data?.getUserAllResumes));
     }
-  }, [data, dispatch]);
+  }, [data]);
 
   const [createResume, { loading: createResume_loading, data: resume_data }] =
     useMutation(CREATE_RESUME);
@@ -144,14 +146,14 @@ const Home: React.FC = () => {
   }, [resume_data, navigate]);
 
   useEffect(() => {
-    if (user && callRegister) {
+    if (user) {
       const userData = {
         email: user.primaryEmailAddress?.emailAddress,
         phoneNumber: user?.primaryPhoneNumber?.phoneNumber,
         name: user.fullName,
       };
 
-      callRegister({ variables: userData });
+      callRegister({ variables: { userEmail: userData } });
     }
   }, [user, callRegister]);
 
@@ -159,6 +161,7 @@ const Home: React.FC = () => {
     <LoginedProvider>
       <Header />
       <div className="w-full mxn mt-10 font-sans">
+        {JSON.stringify(user)}
         <div>
           <p className="text-2xl font-semibold text-gray-600 leading-none">
             Hey Jack
@@ -186,7 +189,7 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full  mt-2 flex justify-center">
           <div className="grid grid-cols-3 w-[50%] ">
-            {myResumes?.map((resume: ResumeType, i: number) => (
+            {myResumes?.slice(0, 2).map((resume: ResumeType, i: number) => (
               <div key={i} className="flex mt-4 flex-col items-center">
                 <div className="bg-white h-52 overflow-y-scroll flex justify-center overflow-hidden group items-center w-40 rounded-md text-gray-400 hover:text-gray-600 border-2 cursor-pointer border-gray-400 relative  transition-all duration-200 hover:border-gray-600 ">
                   <div className="absolute p-1  top-0 right-0 -translate-y-10 group-hover:translate-y-0 transition-all duration-300   w-full flex justify-end gap-2">
@@ -214,15 +217,18 @@ const Home: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Template formating={{
-                      fontColor:'text-black',
-                      fontFamily:'',
-                      fontSize:8,
-                      headingSize:6,
-                      lineSpacing:1,
-                      paragraphSpreading:1,
-                      sectionSpacing:0.2
-                    }} resume={resume} />
+                    <Template
+                      formating={{
+                        fontColor: "text-black",
+                        fontFamily: "",
+                        fontSize: 8,
+                        headingSize: 6,
+                        lineSpacing: 1,
+                        paragraphSpreading: 1,
+                        sectionSpacing: 0.2,
+                      }}
+                      resume={resume}
+                    />
                   </div>
                 </div>
                 <div className="mt-1 text-sm text-gray-500">Web Developer </div>
@@ -242,6 +248,7 @@ const Home: React.FC = () => {
                 )}
               </div>
             </div>
+            <div className="ml-auto"></div>
           </div>
         </div>
       </div>
