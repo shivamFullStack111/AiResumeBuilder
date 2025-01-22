@@ -4,7 +4,6 @@ const { Users } = require("../../schemas/userSchema");
 const resumeResolver = {
   Mutation: {
     createResume: async (_, { userEmail }) => {
-      console.log(userEmail);
       const user = await Users.findOne({ email: userEmail });
 
       if (!user) {
@@ -29,7 +28,6 @@ const resumeResolver = {
   },
   Query: {
     getResume: async (_, { resumeid }) => {
-      console.log(resumeid);
       const resume = await Resumes.findOne({ _id: resumeid });
 
       if (!resume) {
@@ -54,7 +52,6 @@ const resumeResolver = {
       };
     },
     updateResume: async (_, { resumeData, resumeid }) => {
-      console.log(resumeid, resumeData);
       const resume = await Resumes.findOneAndUpdate(
         { _id: resumeid },
         { $set: resumeData },
@@ -63,11 +60,11 @@ const resumeResolver = {
       return resume;
     },
     getUserAllResumes: async (_, { userEmail }) => {
-      return await Resumes.find(userEmail);
+      return await Resumes.find({ userEmail });
     },
     deleteResume: async (_, { resumeId }) => {
-       await Resumes.findByIdAndDelete(resumeId);
-       return {success: true}
+      await Resumes.findByIdAndDelete(resumeId);
+      return { success: true };
     },
   },
 };

@@ -110,11 +110,12 @@ const Home: React.FC = () => {
   // const { formating } = useSelector((state: RootState) => state.resume);
 
   useEffect(() => {
-    getUserAllResumes({
-      variables: {
-        userEmail: user?.primaryEmailAddress,
-      },
-    });
+    if (user)
+      getUserAllResumes({
+        variables: {
+          userEmail: user?.primaryEmailAddress?.emailAddress,
+        },
+      });
   }, [user, getUserAllResumes]);
 
   useEffect(() => {
@@ -155,7 +156,7 @@ const Home: React.FC = () => {
         name: user.fullName,
       };
 
-      callRegister({variables:userData});
+      callRegister({ variables: userData });
     }
   }, [user, callRegister]);
 
@@ -165,6 +166,7 @@ const Home: React.FC = () => {
       <div className="w-full mxn mt-10 font-sans">
         <div>
           <p className="text-2xl font-semibold text-gray-600 leading-none">
+            {JSON.stringify(data)}
             Hey Jack
           </p>
           <p className="text-xl font-semibold text-gray-500">
