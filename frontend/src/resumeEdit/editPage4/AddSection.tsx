@@ -7,7 +7,7 @@ import { BiPencil } from "react-icons/bi";
 import { LuChevronUp } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { ResumeType } from "../editPage1/WorkExperience";
-import { empty, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { RootState, useAppDispatch } from "../../store/store";
 import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";

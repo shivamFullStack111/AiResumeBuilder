@@ -226,6 +226,7 @@ const Home: React.FC = () => {
                         lineSpacing: 1,
                         paragraphSpreading: 1,
                         sectionSpacing: 0.2,
+                        imageSize:14
                       }}
                       resume={resume}
                     />
