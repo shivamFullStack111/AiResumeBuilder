@@ -166,8 +166,7 @@ const Home: React.FC = () => {
       <div className="w-full mxn mt-10 font-sans">
         <div>
           <p className="text-2xl font-semibold text-gray-600 leading-none">
-            {JSON.stringify(data)}
-            Hey Jack
+            Hey {user?.fullName}
           </p>
           <p className="text-xl font-semibold text-gray-500">
             your work history
