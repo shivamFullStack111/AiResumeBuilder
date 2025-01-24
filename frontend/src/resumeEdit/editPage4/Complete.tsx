@@ -42,16 +42,16 @@ const Complete: React.FC<CompleteProps> = (props) => {
   }, [props?.resume, dispatch]);
 
   return (
-    <div className=" overflow-y-scroll min-h-screen bg-blue-900 flex justify-center ">
-      <div className="w-full grid grid-cols-4 mt-10 max-w-[1200px]  justify-center">
+    <div className=" overflow-y-scroll absolute w-full h-full top-0 left-0 hide min-h-screen bg-blue-900 flex justify-center ">
+      <div className="w-full 1100px:grid grid-cols-4 mt-10 max-w-[1200px]  justify-center">
         <LeftSide
           formating={formating}
           // setformating={setformating}
           active={active}
           setactive={setactive}
         ></LeftSide>
-        <div className="h- col-span-2">
-          <div className="w-full p-5 h-full bg-slate-800 flex justify-center rounded-lg bg-white-100">
+        <div className="w-full flex justify-center col-span-2">
+          <div className="w-full p-5 h-full max-1200px:max-w-[440px] bg-slate-800 flex justify-center rounded-lg bg-white-100">
             <Template
               formating={formating}
               templateFunctionsRef={templateFunctionsRef}
@@ -124,9 +124,9 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
 
         {/* designs templates  */}
         {active == 1 && (
-          <div className="p-4">
+          <div className="p-4 flex flex-col">
             <p className="text-white font-bold text-sm ">
-              Colors {formating.fontColor}
+              Colors 
             </p>
             <div className="flex flex-wrap gap-2 mt-4">
               <div
@@ -207,11 +207,11 @@ const LeftSide: React.FC<LeftSideProps> = (props) => {
               ></div>
             </div>
             <p className="text-white font-bold text-sm mt-4 ">Templates</p>
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-4 grid grid-cols-2 600px:grid-cols-3 1100px:grid-cols-2   gap-3">
               {Array.from({ length: 1 }).map((_, i: number) => (
                 <div
                   key={i}
-                  className="w-full bg-white overflow-y-scroll hide h-40 rounded-md cursor-pointer"
+                  className="w-full bg-white overflow-y-scroll hide h-[45vw] 600px:h-[35vw] 1100px:h-40 rounded-md cursor-pointer"
                 >
                   <Template text={"text-[5px]"} resume={resume} />
                 </div>
