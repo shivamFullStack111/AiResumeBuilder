@@ -265,11 +265,14 @@ const Languages: React.FC<LanguagesProps> = (props) => {
           props?.open?.includes("language") && "bg-pink-200"
         }  p-3`}
       >
-        <IoLanguage className="text-lg"></IoLanguage>
+        <IoLanguage className="text-lg min-w-8"></IoLanguage>
         <div>
           <p className="font-bold text-gray-700"> Languages</p>
-          If you are proficient in one or more languages, mention them in this
-          section.
+          <p className="text-sm text-gray-500 text-[11.9px] leading-4">
+            {" "}
+            If you are proficient in one or more languages, mention them in this
+            section.
+          </p>
         </div>
       </div>
 
@@ -396,9 +399,9 @@ const Links: React.FC<LinksProps> = (props) => {
           props?.open?.includes("links") && "bg-pink-200"
         }  p-3`}
       >
-        <PiUserCircleDashed className="text-lg scale-150"></PiUserCircleDashed>
+        <PiUserCircleDashed className="text-lg scale-150 min-w-8"></PiUserCircleDashed>
         <div>
-          <p className="font-bold text-gray-700">Websites and Social Links</p>
+          <p className="font-bold text-gray-700 ">Websites and Social Links</p>
           <p className="text-sm text-gray-500 text-[11.9px] leading-4">
             Include a direct link to your portfolio or samples of your work for
             an added boost. Let your skills speak for themselves! This link is
@@ -485,9 +488,9 @@ const Custom_Section: React.FC<Custom_SectionProps> = (props) => {
           props?.open?.includes("custom-section") && "bg-pink-200"
         }  p-3`}
       >
-        <BiPencil className="text-lg "></BiPencil>
+        <BiPencil className="text-lg  min-w-8"></BiPencil>
         <div>
-          <p className="font-bold text-gray-700"></p>
+          <p className="font-bold text-gray-700">Custom Section</p>
           <p className="text-sm text-gray-500 text-[11.9px] leading-4">
             If you are proficient in one or more , mention them in this section.
             entry.

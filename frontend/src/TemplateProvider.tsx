@@ -101,6 +101,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
     lineHeight: formating?.lineSpacing,
     fontFamily: formating?.fontFamily,
   };
+  const bgColor = "bg-" + formating?.fontColor.split("-")[1] + "-400";
 
   return (
     <div
@@ -198,7 +199,10 @@ export const Template: React.FC<TemplateProps> = (props) => {
         >
           {resume?.customSections?.map((section) => (
             <div className="mt-[2px]">
-              <p className="text-[60%] font-semibold uppercase text-black mt-[1%]">
+              <p
+                style={fontSize}
+                className={`text-[60%] font-semibold text-black mt-[1%] ${formating?.fontColor}`}
+              >
                 {section?.heading}
               </p>
               <p className="text-[53%] text-gray-500">{section?.summary}</p>
@@ -354,7 +358,9 @@ export const Template: React.FC<TemplateProps> = (props) => {
        ${language?.proficiency == "Beginner" && "w-[25%]"}
        ${language?.proficiency == "Intermediate" && "w-[50%]"}
         ${language?.proficiency == "Advanced" && "w-[75%]"}
-        ${language?.proficiency == "Fluent" && "w-[100%]"} bg-black h-full `}
+        ${
+          language?.proficiency == "Fluent" && "w-[100%]"
+        } bg-black ${bgColor} h-full `}
                   ></p>
                 </div>
                 <p className="text-[55%]   font-semibold mb-[3px] text-gray-800">
