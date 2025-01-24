@@ -12,6 +12,7 @@ import { updateResume } from "../../store/slices/resumeSlice";
 import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import { MdOutlinePreview } from "react-icons/md";
 
 const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -27,6 +28,7 @@ const SkillsDetails: React.FC<Props> = (props) => {
   const [inputKeyword, setinputKeyword] = useState<string>("");
   const [selectedSkills, setselectedSkills] = useState<string[]>([]);
   const [updateResumeInBackend, { error }] = useLazyQuery(UPDATE_RESUME);
+  const [previewOpen, setpreviewOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { formating } = useSelector((state: RootState) => state.resume);
 
@@ -89,7 +91,7 @@ const SkillsDetails: React.FC<Props> = (props) => {
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5  grid-cols-6 ">
-          <div className="col-span-4 w-full    h-full ">
+          <div className="col-span-6 1200px:col-span-4 w-full    h-full ">
             <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               We recommend including 6-8 skills{" "}
             </h3>
@@ -98,7 +100,14 @@ const SkillsDetails: React.FC<Props> = (props) => {
               you're confident of the work you do!{" "}
             </p>
 
-            <div className="grid-cols-2 grid gap-6">
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
+
+            <div className="800px:grid-cols-2 mt-4 grid gap-6">
               <div className="border p-4 border-gray-400  rounded-md w-full h-[450px] ">
                 <div className="p-2 border items-center group cursor-pointer hover:shadow-lg hover:border-pink-400  border-gray-400 rounded-md w-full flex">
                   <input
@@ -168,19 +177,25 @@ const SkillsDetails: React.FC<Props> = (props) => {
               </div>
             </div>
           </div>
-          {/* {previewOpen && ( */}
-          <div
-            // onClick={() => setpreviewOpen(false)}
-            className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
-          >
+          {previewOpen && (
             <div
-              onClick={(e) => e.stopPropagation()}
-              className="w-[430px] px-4"
+              onClick={() => setpreviewOpen(false)}
+              className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
             >
-              <TemplateProvider formating={formating} resume={props?.resume} />
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-[430px] px-4"
+              >
+                <TemplateProvider
+                  formating={formating}
+                  resume={props?.resume}
+                />
+              </div>
             </div>
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+            <TemplateProvider formating={formating} resume={props?.resume} />
           </div>
-          {/* )} */}
         </div>
 
         <div className="flex mt-10  justify-between">

@@ -5,7 +5,7 @@ import { IoLanguage } from "react-icons/io5";
 import { PiUserCircleDashed } from "react-icons/pi";
 import { BiPencil } from "react-icons/bi";
 import { LuChevronUp } from "react-icons/lu";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlinePreview } from "react-icons/md";
 import { ResumeType } from "../editPage1/WorkExperience";
 import { useLazyQuery } from "@apollo/client";
 import { RootState, useAppDispatch } from "../../store/store";
@@ -38,6 +38,7 @@ const AddSection: React.FC<Props> = (props) => {
   const [languagesData, setlanguagesData] = useState<LanguagesType[]>([]);
   const [sectionsData, setsectionsData] = useState<SectionType[]>([]);
   const { formating } = useSelector((state: RootState) => state.resume);
+  const [previewOpen, setpreviewOpen] = useState(false);
 
   useEffect(() => {
     if (props?.resume?.links?.length) {
@@ -154,14 +155,22 @@ const AddSection: React.FC<Props> = (props) => {
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5  grid-cols-6 ">
-          <div className="col-span-4 w-full   px-5  h-full ">
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+          <div className="col-span-6 1200px:col-span-4 w-full   800px:px-5  h-full ">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Add More Details
             </h3>
-            <p className="mt-1 mb-6">
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               This is an opportunity to highlight qualifications that don't fit
               into standard resume sections.
             </p>
+
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
+
             {/* 1 */}
             <Languages
               languagesData={languagesData}
@@ -185,20 +194,23 @@ const AddSection: React.FC<Props> = (props) => {
               setopen={setopen}
             />
           </div>
-          {/* {previewOpen && ( */}
+          {previewOpen && (
             <div
-              // onClick={() => setpreviewOpen(false)}
+              onClick={() => setpreviewOpen(false)}
               className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
             >
               <div
                 onClick={(e) => e.stopPropagation()}
                 className="w-[430px] px-4"
               >
-                <TemplateProvider formating={formating} resume={props?.resume} />
+                <TemplateProvider
+                  formating={formating}
+                  resume={props?.resume}
+                />
               </div>
             </div>
-          {/* )} */}
-          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen 1200px:overflow-y-scroll hide ">
             <TemplateProvider formating={formating} resume={props?.resume} />
           </div>
         </div>
@@ -255,23 +267,19 @@ const Languages: React.FC<LanguagesProps> = (props) => {
       >
         <IoLanguage className="text-lg"></IoLanguage>
         <div>
-          <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
-            Languages
-          </h3>
-          <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
-            If you are proficient in one or more languages, mention them in this
-            section.
-          </p>
+          <p className="font-bold text-gray-700"> Languages</p>
+          If you are proficient in one or more languages, mention them in this
+          section.
         </div>
       </div>
 
       {props?.open.includes("language") && (
-        <div className="w-full  h-full overflow-y-scroll  p-4 ">
+        <div className="w-full  h-full 1200px:overflow-y-scroll  p-3 800px:p-4  ">
           {props?.languagesData?.map((language: LanguagesType, i: number) => {
             return (
               <div
                 key={i}
-                className=" mb-2  grid grid-cols-12 items-center gap-5 w-full "
+                className=" mb-2  grid grid-cols-12 items-center gap-2 500px:gap-3 800px:gap-5 w-full "
               >
                 <CustomInput
                   required
@@ -400,7 +408,7 @@ const Links: React.FC<LinksProps> = (props) => {
       </div>
 
       {props?.open.includes("links") && (
-        <div className="w-full  h-full overflow-y-scroll  p-4 gap-4">
+        <div className="w-full  h-full 1200px:overflow-y-scroll  p-4 gap-4">
           {props?.linksData?.map((link: string, i: number) => (
             <div key={i} className=" flex gap-5 mb-2">
               <CustomInput
@@ -493,7 +501,7 @@ const Custom_Section: React.FC<Custom_SectionProps> = (props) => {
             return (
               <>
                 {" "}
-                <div className="w-full  h-full overflow-y-scroll  p-4 gap-4">
+                <div className="w-full  h-full 1200px:overflow-y-scroll  p-4 gap-4">
                   <div className=" flex gap-5">
                     <CustomInput
                       required

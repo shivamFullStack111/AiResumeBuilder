@@ -13,6 +13,7 @@ import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import { MdOutlinePreview } from "react-icons/md";
 
 const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -29,6 +30,7 @@ const SummaryDetails: React.FC<Props> = (props) => {
   const [finalSummary, setfinalSummary] = useState<string>("");
   const [updateResumeInBackend, { error }] = useLazyQuery(UPDATE_RESUME);
   const dispatch = useAppDispatch();
+  const [previewOpen, setpreviewOpen] = useState(false);
   const { formating } = useSelector((state: RootState) => state.resume);
 
   const handleContinue = () => {
@@ -97,20 +99,29 @@ const SummaryDetails: React.FC<Props> = (props) => {
       <Toaster />
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5  grid-cols-6 ">
-          <div className="col-span-4 w-full    h-full ">
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+          <div className="col-span-6 1200px:col-span-4 w-full    h-full ">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               We recommend including 6-8 skills{" "}
             </h3>
-            <p className="mt-2 mb-6">
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               Choose skills that align with the job requirements. Show employers
               you're confident of the work you do!{" "}
             </p>
+
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
+            
+
             <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800"></h3>
             <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               Choose skills that align with the job requirements. Show employers
               you're confident of the work you do!{" "}
             </p>
-            <div className="grid-cols-2 grid gap-6">
+            <div className="grid-cols-1 800px:grid-cols-2 grid gap-6">
               <div className="border p-4 border-gray-400  rounded-md w-full h-[450px] ">
                 <p className="font-semibold text-[12px] text-gray-600">
                   SEARCH BY JOB TITLE
@@ -175,9 +186,9 @@ const SummaryDetails: React.FC<Props> = (props) => {
               </div>
             </div>
           </div>
-           {/* {previewOpen && ( */}
-           <div
-              // onClick={() => setpreviewOpen(false)}
+          {previewOpen && (
+            <div
+              onClick={() => setpreviewOpen(false)}
               className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
             >
               <div
@@ -187,10 +198,12 @@ const SummaryDetails: React.FC<Props> = (props) => {
                 <TemplateProvider formating={formating} resume={props?.resume} />
               </div>
             </div>
-          {/* )} */}
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen 1200px:overflow-y-scroll hide ">
+            <TemplateProvider formating={formating} resume={props?.resume} />
+          </div>
         </div>
 
-       
         <div className="flex mt-10  justify-between">
           <div
             onClick={() => navigate(-1)}
