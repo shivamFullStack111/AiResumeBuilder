@@ -33,9 +33,6 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
       );
   }, [resume?.workExperience, experienceNumber]);
 
-  useEffect(() => {
-    console.log(responsibilities);
-  }, [responsibilities]);
 
   const handleContinue = () => {
     if (!responsibilities) {
@@ -91,15 +88,15 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
     <div className="w-full flex justify-center">
       <Toaster />
       <div className="w-full max-w-[1200px]">
-        <h3 className="mt-16 font-bold text-3xl text-slate-800">
+        <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
           Next, write about what you did as a Developer{" "}
         </h3>
-        <p className="mt-1 mb-6">
+        <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
           Pick from our ready-to-use phrases or write your own and get AI
-          writing help.
+          writing help.{" "}
         </p>
 
-        <div className="grid w-full bg-white mt-5 gap-5 grid-cols-2">
+        <div className="grid w-full bg-white mt-5 gap-5 grid-cols-1 1000px:grid-cols-2 ">
           <div>
             <div className="flex gap-5">
               <div

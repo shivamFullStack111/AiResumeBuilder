@@ -104,7 +104,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
   return (
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
-        <div className="grid w-full bg-white mt-5   grid-cols-6   gap-5 ">
+        <div className="grid w-full bg-white mt-5   grid-cols-1 800px:grid-cols-6   gap-5 ">
           <form
             onSubmit={handleContinue}
             className="col-span-6 1200px:col-span-4 w-full    h-full "
@@ -120,7 +120,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
             <div>
               <MdOutlinePreview
                 onClick={() => setpreviewOpen(true)}
-                className="text-[40px] p-2 bg-green-500 text-white rounded-md ml-auto mr-10 1200px:hidden"
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
               ></MdOutlinePreview>
             </div>
             {resume?.templateData?.withPhotos && (
@@ -193,7 +193,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 </div>
               </div>
             )}
-            <div className="grid grid-cols-2 mt-4 gap-5  w-full">
+            <div className="grid grid-cols-1 800px:grid-cols-2 mt-4 gap-5  w-full">
               <CustomInput
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({ ...p, firstName: e.target.value }));
@@ -214,7 +214,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="Enter your last name"
               ></CustomInput>
             </div>
-            <div className="grid mt-5 grid-cols-2 gap-4  w-full">
+            <div className="grid mt-5 grid-cols-1 800px:grid-cols-2 gap-4  w-full">
               <CustomInput
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setpersonalInfo((p) => ({
@@ -230,7 +230,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 title="state"
                 placeholder="Enter your state "
               ></CustomInput>
-              <div className="flex gap-5">
+              <div className="800px:flex  gap-5">
                 <CustomInput
                   required
                   onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -247,6 +247,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                   placeholder="Enter your country "
                 ></CustomInput>{" "}
                 <CustomInput
+                  containerClassName="max-800px:mt-3"
                   required
                   onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setpersonalInfo((p) => ({
@@ -264,7 +265,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
                 ></CustomInput>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-5  w-full">
+            <div className="grid grid-cols-1 800px:grid-cols-2 gap-5 mt-5  w-full">
               <CustomInput
                 required
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -317,7 +318,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
               </div>
             </div>
           )}
-          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen 1200px:overflow-y-scroll hide ">
             <TemplateProvider formating={formating} resume={resume} />
           </div>
         </div>

@@ -12,6 +12,7 @@ import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import { MdOutlinePreview } from "react-icons/md";
 
 interface Props {
   resume: ResumeType | null;
@@ -39,6 +40,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
   const [courseEndDate, setcourseEndDate] = useState<string>("");
   const [educationNumber, seteducationNumber] = useState<number>(0);
   const { formating } = useSelector((state: RootState) => state.resume);
+  const [previewOpen, setpreviewOpen] = useState(false);
 
   useEffect(() => {
     let edNumber: number = Number(searchParam.get("education")) - 1 || 0;
@@ -129,7 +131,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
       <Toaster />
       <form onSubmit={handleContinue} className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5  grid-cols-6 gap-5 ">
-          <div className="col-span-4 w-full    h-full ">
+          <div className="col-span-10 1200px:col-span-4 w-full    h-full ">
             <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Let’s talk about your education
             </h3>
@@ -138,11 +140,16 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
               courses you took. Even if you didn’t finish, it’s important to
               list them.
             </p>
-
-            <div className="flex gap-3 justify-end  ">
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
+            <div className="flex gap-3 justify-end mt-4  ">
               {resume?.experience !== "no experience" && (
                 <div
-                  className=" flex gap-2 py-[6px] px-6 items-center text-pink-400 hover:text-pink-500 border-pink-400 cursor-pointer hover:border-pink-500 hover:shadow-xl bg-white border rounded-md"
+                  className=" flex gap-2 py-[10px] text-sm px-2 600px:px-8  items-center text-pink-400 hover:text-pink-500 border-pink-400 cursor-pointer hover:border-pink-500 hover:shadow-xl bg-white border rounded-md"
                   onClick={() =>
                     navigate(
                       `?page=4&templateid=ghfh457t88ygurhg&edit=experience-details&experience=${
@@ -158,7 +165,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                 </div>
               )}
               <div
-                className=" flex gap-2 py-[6px] px-6 items-center bg-pink-400 cursor-pointer hover:bg-pink-500 hover:shadow-xl text-gray-100 border rounded-md"
+                className=" flex gap-2 py-[10px] text-sm px-2 600px:px-8  items-center bg-pink-400 cursor-pointer hover:bg-pink-500 hover:shadow-xl text-gray-100 border rounded-md"
                 onClick={() => {
                   if (resume?.education?.length) {
                     const updatedEducation = resume?.education?.map(
@@ -223,7 +230,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="Delhi Public School (DPS) "
               ></CustomInput>
             </div>
-            <div className="grid mt-5 grid-cols-2 gap-4  w-full">
+            <div className="grid mt-5 800px:grid-cols-2 gap-4  w-full">
               <CustomInput
                 required
                 onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,9 +240,10 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                 title="degree"
                 placeholder="Enter your degree name "
               ></CustomInput>
-              <div className=" flex gap-4">
+              {/* <div className=" flex gap-4"> */}
                 <CustomInput
                   required
+                  containerClassName="bg-white"
                   value={
                     courseEndDate
                       ? courseEndDate
@@ -261,7 +269,7 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                   placeholder="Month "
                   type="month"
                 ></CustomInput>{" "}
-              </div>
+              {/* </div> */}
             </div>
 
             {/* add more skills  */}
@@ -352,9 +360,9 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
               })}
             </div>
           </div>
-            {/* {previewOpen && ( */}
+          {previewOpen && (
             <div
-              // onClick={() => setpreviewOpen(false)}
+              onClick={() => setpreviewOpen(false)}
               className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
             >
               <div
@@ -364,7 +372,10 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
                 <TemplateProvider formating={formating} resume={resume} />
               </div>
             </div>
-          {/* )} */}
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+            <TemplateProvider formating={formating} resume={resume} />
+          </div>
         </div>
 
         <div className="flex mt-10  justify-between">

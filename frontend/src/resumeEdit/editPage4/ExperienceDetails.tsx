@@ -9,6 +9,7 @@ import { DateInput } from "./Aboutjob/DateInput";
 import TemplateProvider from "../../TemplateProvider";
 import { UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
+import { MdOutlinePreview } from "react-icons/md";
 
 interface Props {
   resume: ResumeType | null;
@@ -30,6 +31,8 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
   const [experience, setexperience] = useState<ExperienceType>();
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
+  const [previewOpen, setpreviewOpen] = useState(false);
+
   const { formating } = useSelector((state: RootState) => state.resume);
 
   let experienceNumber: number = Number(searchParam.get("experience")) - 1 || 0;
@@ -106,7 +109,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
         <div className="grid w-full bg-white mt-5 gap-5 grid-cols-6 ">
           <form
             onSubmit={handleContinue}
-            className="col-span-4 w-full    h-full "
+            className="col-span-10 1200px:col-span-4  w-full    h-full "
           >
             <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Let’s work on your experience
@@ -115,7 +118,13 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
               Start with your most recent job first.
             </p>
 
-            <div className="grid grid-cols-2 gap-5  w-full">
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 mt-4 bg-green-500 text-white rounded-md ml-auto  1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
+            <div className="grid mt-6  grid-cols-1 800px:grid-cols-2 gap-5  w-full">
               <CustomInput
                 required
                 onchange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -157,7 +166,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="18/4 2nd floor taj palace near railway station, delhi "
               ></CustomInput>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-5  w-full">
+            <div className="grid  grid-cols-1 800px:grid-cols-2 gap-5 mt-5  w-full">
               <DateInput
                 required
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -219,9 +228,9 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
               </button>
             </div>
           </form>
-          {/* {previewOpen && ( */}
-          <div
-              // onClick={() => setpreviewOpen(false)}
+          {previewOpen && (
+            <div
+              onClick={() => setpreviewOpen(false)}
               className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
             >
               <div
@@ -231,7 +240,10 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
                 <TemplateProvider formating={formating} resume={resume} />
               </div>
             </div>
-          {/* )} */}
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+            <TemplateProvider formating={formating} resume={resume} />
+          </div>
         </div>
       </div>
     </div>
