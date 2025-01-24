@@ -28,7 +28,7 @@ const SkillsDetails: React.FC<Props> = (props) => {
   const [selectedSkills, setselectedSkills] = useState<string[]>([]);
   const [updateResumeInBackend, { error }] = useLazyQuery(UPDATE_RESUME);
   const dispatch = useAppDispatch();
-  const { formating } = useSelector((state:RootState) => state.resume);
+  const { formating } = useSelector((state: RootState) => state.resume);
 
   const handleContinue = () => {
     updateResumeInBackend({
@@ -90,13 +90,14 @@ const SkillsDetails: React.FC<Props> = (props) => {
       <div className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5 gap-5  grid-cols-6 ">
           <div className="col-span-4 w-full    h-full ">
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               We recommend including 6-8 skills{" "}
             </h3>
-            <p className="mt-2 mb-6">
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               Choose skills that align with the job requirements. Show employers
-              you're confident of the work you do!
+              you're confident of the work you do!{" "}
             </p>
+
             <div className="grid-cols-2 grid gap-6">
               <div className="border p-4 border-gray-400  rounded-md w-full h-[450px] ">
                 <div className="p-2 border items-center group cursor-pointer hover:shadow-lg hover:border-pink-400  border-gray-400 rounded-md w-full flex">
@@ -167,23 +168,35 @@ const SkillsDetails: React.FC<Props> = (props) => {
               </div>
             </div>
           </div>
-          <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider formating={formating} resume={props?.resume} />
-          </div>{" "}
+          {/* {previewOpen && ( */}
+          <div
+            // onClick={() => setpreviewOpen(false)}
+            className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-[430px] px-4"
+            >
+              <TemplateProvider formating={formating} resume={props?.resume} />
+            </div>
+          </div>
+          {/* )} */}
         </div>
-        <div className="flex mt-4  justify-between">
+
+        <div className="flex mt-10  justify-between">
           <div
             onClick={() => navigate(-1)}
-            className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+            className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
           >
             Back
           </div>
-          <div
+          <button
             onClick={handleContinue}
+            type="submit"
             className="px-16 rounded-3xl bg-blue-500  hover:bg-blue-600 cursor-pointer text-white font-semibold py-2"
           >
             Continue
-          </div>
+          </button>
         </div>
       </div>
     </div>

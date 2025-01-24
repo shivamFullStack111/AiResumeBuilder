@@ -130,14 +130,15 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
       <form onSubmit={handleContinue} className="w-full max-w-[1200px] ">
         <div className="grid w-full bg-white mt-5  grid-cols-6 gap-5 ">
           <div className="col-span-4 w-full    h-full ">
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Let’s talk about your education
             </h3>
-            <p className="mt-2">
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               Tell us about any colleges, vocational programs, or training
               courses you took. Even if you didn’t finish, it’s important to
               list them.
             </p>
+
             <div className="flex gap-3 justify-end  ">
               {resume?.experience !== "no experience" && (
                 <div
@@ -351,14 +352,25 @@ const EducationDetails: React.FC<Props> = ({ resume }) => {
               })}
             </div>
           </div>
-          <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider formating={formating} resume={resume} />
-          </div>{" "}
+            {/* {previewOpen && ( */}
+            <div
+              // onClick={() => setpreviewOpen(false)}
+              className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-[430px] px-4"
+              >
+                <TemplateProvider formating={formating} resume={resume} />
+              </div>
+            </div>
+          {/* )} */}
         </div>
-        <div className="flex mt-4  justify-between">
+
+        <div className="flex mt-10  justify-between">
           <div
             onClick={() => navigate(-1)}
-            className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+            className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
           >
             Back
           </div>

@@ -96,6 +96,7 @@ const AddSection: React.FC<Props> = (props) => {
         toast.error("Please provide a section heading");
         return true;
       }
+
       if (!section?.summary) {
         toast.error("Please provide a section summary");
         return true;
@@ -184,26 +185,38 @@ const AddSection: React.FC<Props> = (props) => {
               setopen={setopen}
             />
           </div>
-          <div className="col-span-2 pt-8 min-h-[80vh] w-full h-full max-h-screen overflow-y-scroll hide ">
-            <div>
-              {" "}
-              <TemplateProvider formating={formating} resume={props?.resume} />
+          {/* {previewOpen && ( */}
+            <div
+              // onClick={() => setpreviewOpen(false)}
+              className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-[430px] px-4"
+              >
+                <TemplateProvider formating={formating} resume={props?.resume} />
+              </div>
             </div>
-          </div>{" "}
+          {/* )} */}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+            <TemplateProvider formating={formating} resume={props?.resume} />
+          </div>
         </div>
+
         <div className="flex mt-10  justify-between">
           <div
             onClick={() => navigate(-1)}
-            className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+            className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
           >
             Back
           </div>
-          <div
+          <button
             onClick={handleContinue}
+            type="submit"
             className="px-16 rounded-3xl bg-blue-500  hover:bg-blue-600 cursor-pointer text-white font-semibold py-2"
           >
             Continue
-          </div>
+          </button>
         </div>
       </div>
     </div>
@@ -242,9 +255,10 @@ const Languages: React.FC<LanguagesProps> = (props) => {
       >
         <IoLanguage className="text-lg"></IoLanguage>
         <div>
-          <p className="font-bold text-gray-700">Languages</p>
-
-          <p className="text-sm text-gray-500 text-[11.9px] leading-4">
+          <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
+            Languages
+          </h3>
+          <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
             If you are proficient in one or more languages, mention them in this
             section.
           </p>

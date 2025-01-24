@@ -29,12 +29,12 @@ const CountryPage: React.FC<Props> = ({ resume }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-10">
+    <div className="w-full min-h-screen flex flex-col items-center py-10">
       <img src="/logo3.png" className="h-14 w-14" alt="" />
-      <p className="text-3xl font-bold text-gray-700 mt-6">
+      <p className=" text-xl 1000px:text-3xl font-bold text-gray-700 mt-6">
         Where are you focusing your job search?
       </p>
-      <p className="mt-2 text-gray-600 font-semibold text-xl">
+      <p className="mt-2 text-gray-600 font-semibold 100px:text-xl">
         We can give you better advice and guidance if we know.
       </p>
       <div className="w-[200px] mt-4">
@@ -49,14 +49,14 @@ const CountryPage: React.FC<Props> = ({ resume }) => {
           value={{ label: resume?.targetCountry, value: resume?.targetCountry }}
         />
       </div>
-      <div className="mt-6 px-8 py-3 bg-pink-200 text-gray-700 rounded-lg ">
+      {/* <div className="mt-6 px-8 py-3 bg-pink-200 text-gray-700 rounded-lg ">
         We'll recommend the right templates for your target country
-      </div>
+      </div> */}
       {resume?.targetCountry && (
         <button
           type="button"
           onClick={handleContinue}
-          className="bg-blue-500 text-white flex justify-center items-center px-36 mt-8 cursor-pointer py-3 text-lg font-semibold hover:bg-blue-600 rounded-lg"
+          className="bg-blue-500 text-white flex justify-center items-center w-[300px] 600px:w-[400px] 1000px:w-[500px] mt-8 cursor-pointer py-3 600px:text-lg font-semibold hover:bg-blue-600 rounded-lg"
         >
           See Templates
         </button>

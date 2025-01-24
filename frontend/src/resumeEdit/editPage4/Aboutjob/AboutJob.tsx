@@ -94,7 +94,7 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
         <h3 className="mt-16 font-bold text-3xl text-slate-800">
           Next, write about what you did as a Developer{" "}
         </h3>
-        <p className="mt-2">
+        <p className="mt-1 mb-6">
           Pick from our ready-to-use phrases or write your own and get AI
           writing help.
         </p>
@@ -149,7 +149,7 @@ const AboutJob: React.FC<Props> = ({ resume }) => {
         <div className="flex mt-10 w-full justify-between">
           <div
             onClick={() => navigate(-1)}
-            className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+            className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
           >
             Back
           </div>

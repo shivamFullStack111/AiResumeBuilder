@@ -94,23 +94,23 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-10">
+    <div className="w-full min-h-screen flex flex-col items-center py-10">
       <img src="/logo2.png" className="h-14 w-[60px]" alt="" />
-      <p className="text-3xl font-bold text-gray-700 mt-6">
+      <p className="text-xl 600px:text-2xl 1000px:text-3xl font-bold text-gray-700 mt-6">
         How much work experience do you have?
         {/* {myResumes?.length} */}
       </p>
-      <p className="mt-2 text-gray-600 font-semibold text-xl">
+      <p className="mt-2 text-gray-600 font-semibold  text-sm 600px:text-lg 1000px:text-xl">
         We can give you better advice and guidance if we know.
       </p>
 
-      <div className="w-full  flex justify-center gap-4 mt-10">
+      <div className="w-full   flex flex-wrap justify-center gap-4 mt-10">
         <div className="flex justify-">
           <div
             onClick={() => {
               dispatch(updateResume({ experience: "no experience" }));
             }}
-            className={`h-12 w-44 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
+            className={`h-12 w-40 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
               resume?.experience == "no experience"
                 ? "border-pink-600 text-pink-600"
                 : ""
@@ -124,7 +124,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
             onClick={() => {
               dispatch(updateResume({ experience: "entry-level" }));
             }}
-            className={`h-12 w-44 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
+            className={`h-12 w-40 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
               resume?.experience == "entry-level"
                 ? "border-pink-600 text-pink-600"
                 : ""
@@ -138,7 +138,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
             onClick={() => {
               dispatch(updateResume({ experience: "mid-level" }));
             }}
-            className={`h-12 w-44 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
+            className={`h-12 w-40 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
               resume?.experience == "mid-level"
                 ? "border-pink-600 text-pink-600"
                 : ""
@@ -152,7 +152,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
             onClick={() => {
               dispatch(updateResume({ experience: "senior" }));
             }}
-            className={`h-12 w-44 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
+            className={`h-12 w-40 rounded-lg border-2 border-gray-500 cursor-pointer hover:border-pink-600 flex justify-center items-center  font-semibold text-gray-500 hover:text-pink-600 ${
               resume?.experience == "senior"
                 ? "border-pink-600 text-pink-600"
                 : ""
@@ -164,8 +164,8 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
       </div>
 
       {resume?.experience && (
-        <div className="py-4 px-8 flex flex-col items-center mt-10 bg-pink-200 w-[500px] rounded-xl">
-          <div className="font-semibold text-gray-800 text-lg">
+        <div className="py-4 px-2 600px:px-4 1100px:px-8  flex flex-col items-center mt-10 bg-pink-200 rounded-xl">
+          <div className="font-semibold text-gray-800 600px:text-xl">
             {resume?.experience == "no experience" &&
               "Typically less than 6 months or 0 months experience"}
             {resume?.experience == "entry-level" &&
@@ -175,7 +175,7 @@ const WorkExperience: React.FC<Props> = ({ resume }) => {
             {resume?.experience == "senior" && "Typically 10+ years experience"}
           </div>
 
-          <p className="text-gray-600 text-center mt-2  ">
+          <p className="text-gray-600 text-center text-sm mt-2  ">
             We've got you! We'll help you find relevant experience to fill in
             your resume.
           </p>

@@ -69,21 +69,27 @@ const Templates: React.FC<Props> = ({ resume }) => {
         id="absoluteDiv"
         className="fixed bg-white  top-0 z-50 left-0 flex flex-col items-center w-full "
       >
-        <div className="text-3xl flex justify-center gap-2 items-center mt-6 font-bold text-gray-700 ">
-          <img className="h-16 w-12" src="/logo4.png" alt="" />{" "}
-          <div className="flex flex-col mt-4 justify-center ">
+        <div className=" flex justify-center gap-2 items-center mt-6 font-bold text-gray-700 ">
+          <img
+            className="h-14 w-10 800px:h-16 800px:w-12 mt-4"
+            src="/logo4.png"
+            alt=""
+          />{" "}
+          <div className="flex text-lg 800px:text-2xl flex-col mt-4 justify-center ">
             <p>Templates we recommend for you </p>{" "}
-            <p className="mt-3 text-gray-600 font-semibold text-center text-xl">
+            <p className="-mt-1 600px:mt-1 text-gray-600 font-semibold text-center text-sm">
               You can always change your template later.
             </p>
           </div>
         </div>
 
         <div className="flex w-full justify-center  ">
-          <div className="w-[75%] max-w-[1000px] mt-8 flex px-5  gap-2 rounded-lg border border-gray-300 shadow-lg shadow-blue-100 py-3  justify-center items-center bg-gray-200">
-            <p className="text-sm col-span-1  font-semibold">Filters:</p>
+          <div className="w-[90%] 800px:w-[80%] 1000px:w-[75%] max-w-[1000px] mt-8 flex px-5  gap-2 rounded-lg border border-gray-300 shadow-lg shadow-blue-100 py-3  justify-center items-center bg-gray-200">
+            <p className="text-sm col-span-1 h-full  font-semibold mt-5">
+              Filters:
+            </p>
             <div className="grid grid-cols-10 gap-3 w-full">
-              <div className="h-10 w-full col-span-6 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
+              <div className="h-10 w-full col-span-10 600px:col-span-6 rounded-md shadow-md border-2 border-white hover:border-blue-400 flex items-center group cursor-pointer  bg-white">
                 <div className="flex px-2 relative w-full justify-between">
                   <p className="text-sm">Headshot</p>
                   <FaChevronDown className="ml-auto group-hover:rotate-180 transition-all duration-300 text-gray-700 text-lg"></FaChevronDown>
@@ -226,7 +232,7 @@ const Templates: React.FC<Props> = ({ resume }) => {
                 </div>
               </div> */}
 
-              <div className="w-full col-span-4 flex px-2   items-center">
+              <div className="w-full col-span-10 600px:col-span-4  flex px-2   items-center">
                 <p className="font-semibold text-sm">Colors:</p>
                 <div
                   onClick={() => setcolor("text-red-400")}
@@ -257,34 +263,38 @@ const Templates: React.FC<Props> = ({ resume }) => {
           </div>
         </div>
       </div>
-      <div className=" flex mxn justify-center  w-full ">
-        <div className={`w-full max-w-[1000px] px-3 mt-[220px]   `}>
+      <div className=" flex  justify-center  w-full ">
+        <div
+          className={`w-full  max-w-[1000px] 1000px:px-3 mt-[250px] 600px:mt-[220px]    `}
+        >
           <p className="text-sm">Showing all templates (1)</p>
-          <div className="grid w-full mt-4 gap-8 grid-cols-3">
-            <div className="w-full h-[380px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
-              <div className="w-full absolute z-50 flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
-                <button
-                  onClick={() => handleContinue("frhjgjrhg4568gfhb")}
-                  type="button"
-                  title="choose"
-                  className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
-                >
-                  Choose template
-                </button>
+          <div className="grid w-full mt-4 gap-3 600px:gap-5 grid-cols-1 700px:grid-cols-2 1200px:grid-cols-3  ">
+            {[1, 2, 3, 4].map(() => (
+              <div className="w-full h-[110vw]  700px:h-[60vw] 1200px:h-[33vw] 1200px:max-h-[400px] border-2 border-gray-400 rounded-md group cursor-pointer overflow-hidden relative">
+                <div className="w-full absolute z-50 flex justify-center -bottom-12  group-hover:bottom-3 transition-all duration-300  ">
+                  <button
+                    onClick={() => handleContinue("frhjgjrhg4568gfhb")}
+                    type="button"
+                    title="choose"
+                    className="bg-blue-500 text-white py-2 w-[80%] rounded-3xl "
+                  >
+                    Choose template
+                  </button>
+                </div>
+                <div className="w-full h-full absolute z-40"></div>
+                {resume && (
+                  <Template
+                    resume={{
+                      ...resume,
+                      templateData: {
+                        ...resume?.templateData,
+                        withPhotos: photo,
+                      },
+                    }}
+                  />
+                )}
               </div>
-              <div className="w-full h-full absolute z-40"></div>
-              {resume && (
-                <Template
-                  resume={{
-                    ...resume,
-                    templateData: {
-                      ...resume?.templateData,
-                      withPhotos: photo,
-                    },
-                  }}
-                />
-              )}
-            </div>
+            ))}
           </div>
         </div>
       </div>

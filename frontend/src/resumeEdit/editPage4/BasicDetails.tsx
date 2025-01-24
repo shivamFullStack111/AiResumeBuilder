@@ -10,6 +10,7 @@ import { backendUrl, UPDATE_RESUME } from "../../utils";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
+import { MdOutlinePreview } from "react-icons/md";
 
 interface Props {
   resume: ResumeType | null;
@@ -46,6 +47,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
   const dispatch = useAppDispatch();
   const { formating } = useSelector((state: RootState) => state.resume);
   const [image, setimage] = useState<File | undefined>(undefined);
+  const [previewOpen, setpreviewOpen] = useState(false);
   const [imageUploading, setimageUploading] = useState(false);
 
   // setresume to usestate
@@ -102,21 +104,28 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
   return (
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[1200px] ">
-        <div className="grid w-full bg-white mt-5   grid-cols-6 gap-5 ">
+        <div className="grid w-full bg-white mt-5   grid-cols-6   gap-5 ">
           <form
             onSubmit={handleContinue}
-            className="col-span-4 w-full    h-full "
+            className="col-span-6 1200px:col-span-4 w-full    h-full "
           >
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Let’s start with your header
             </h3>
-            <p className="mt-2">
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
               Include your full name and at least one way for employers to reach
               you.
             </p>
+
+            <div>
+              <MdOutlinePreview
+                onClick={() => setpreviewOpen(true)}
+                className="text-[40px] p-2 bg-green-500 text-white rounded-md ml-auto mr-10 1200px:hidden"
+              ></MdOutlinePreview>
+            </div>
             {resume?.templateData?.withPhotos && (
               <div className="mt-5 flex gap-3 items-center">
-                <div className="w-24 h-28 border-dashed border flex justify-center items-center border-gray-500">
+                <div className=" w-16 h-20 1200px:w-24 1200px:h-28 border-dashed border flex justify-center items-center border-gray-500">
                   {imageUploading ? (
                     <p className="text-[10px] font-semibold text-blue-500">
                       Uploading...
@@ -283,7 +292,7 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
             <div className="flex mt-10  justify-between">
               <div
                 onClick={() => navigate(-1)}
-                className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+                className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
               >
                 Back
               </div>
@@ -295,7 +304,20 @@ const BasicDetails: React.FC<Props> = ({ resume }) => {
               </button>
             </div>
           </form>
-          <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
+          {previewOpen && (
+            <div
+              onClick={() => setpreviewOpen(false)}
+              className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-[430px] px-4"
+              >
+                <TemplateProvider formating={formating} resume={resume} />
+              </div>
+            </div>
+          )}
+          <div className="col-span-2 max-1200px:hidden pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
             <TemplateProvider formating={formating} resume={resume} />
           </div>
         </div>

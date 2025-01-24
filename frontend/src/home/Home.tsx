@@ -137,7 +137,6 @@ const Home: React.FC = () => {
           userEmail: user?.primaryEmailAddress?.emailAddress,
         },
       });
-
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -170,24 +169,24 @@ const Home: React.FC = () => {
       <Header />
       <div className="w-full mxn mt-10 font-sans">
         <div>
-          <p className="text-2xl font-semibold text-gray-600 leading-none">
-            Hey {myResumes?.length} {user?.fullName}
+          <p className="text-2xl font-bold font-serif text-gray-600 leading-none">
+            Hey {user?.fullName}
           </p>
           <p className="text-xl font-semibold text-gray-500">
             your work history
           </p>
-          <div className="flex justify-center mt-10 ">
-            <div className="bg-blue-200 font-semibold px-8 rounded-xl py-3 text-center">
+          <div className="flex  justify-center mt-10 ">
+            <div className="bg-blue-200 font-semibold px-2 100px:px-8 rounded-xl py-3 text-center">
               {" "}
-              <p className="text-[16px] leading-tight text-gray-600">
+              <p className="text-[14px] 1000px:text-[16px] leading-tight text-gray-600">
                 {" "}
                 Below is a list of your work history.
               </p>
-              <p className="text-[16px] leading-tight text-gray-600">
+              <p className="text-[14px] 1000px:text-[16px] leading-tight text-gray-600">
                 {" "}
                 By clicking on the pencil you will be able to edit.{" "}
               </p>
-              <p className="text-[16px] leading-tight text-gray-600">
+              <p className="text-[14px] 1000px:text-[16px] leading-tight text-gray-600">
                 {" "}
                 Want to create a new Resume click on the black box.
               </p>
@@ -195,7 +194,7 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div className="w-full  mt-2 flex justify-center">
-          <div className="grid grid-cols-3 w-[50%] ">
+          <div className="grid grid-cols-2 600px:grid-cols-3 900px:w-[70%] 1100px:w-[50%]  h-full  w-[100%] ">
             {getUserResume_Loading && (
               <div className="flex  mt-4 flex-col items-center">
                 <div className="bg-gray-300 flex justify-center items-center animate-pulse h-52 w-40 rounded-md ">
@@ -288,7 +287,7 @@ const Home: React.FC = () => {
                 </div>
               </>
             )}
-            <div className="flex col-span-3 justify-end gap-2 w-full items-center">
+            <div className="flex mb-10   justify-end gap-2 w-full items-center col-span-2 600px:col-span-3">
               {Array.from({ length: Math.round(myResumes?.length / 2) }).map(
                 (_, i) => {
                   const index = i + 1;

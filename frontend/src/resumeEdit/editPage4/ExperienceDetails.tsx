@@ -108,10 +108,13 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
             onSubmit={handleContinue}
             className="col-span-4 w-full    h-full "
           >
-            <h3 className="mt-16 font-bold text-3xl text-slate-800">
+            <h3 className="mt-6 600px:mt-10 1200px:mt-16 font-bold text-xl 600px:text-2xl 1200px:text-3xl text-slate-800">
               Let’s work on your experience
             </h3>
-            <p className="mt-2">Start with your most recent job first.</p>
+            <p className="mt-2 text-sm 600px:text-lg 1200px:text-xl">
+              Start with your most recent job first.
+            </p>
+
             <div className="grid grid-cols-2 gap-5  w-full">
               <CustomInput
                 required
@@ -139,6 +142,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
                 placeholder="Microsoft"
               ></CustomInput>
             </div>
+
             <div className="grid mt-5 gap-4  w-full">
               <CustomInput
                 required
@@ -203,7 +207,7 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
               <button
                 type="submit"
                 onClick={() => navigate(-1)}
-                className="px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
+                className="px-10 1200px:px-16 rounded-3xl hover:bg-gray-200 cursor-pointer border-2 border-black font-semibold py-2"
               >
                 Back
               </button>
@@ -215,9 +219,19 @@ const ExperienceDetails: React.FC<Props> = ({ resume }) => {
               </button>
             </div>
           </form>
-          <div className="col-span-2 pt-8 w-full h-full max-h-screen overflow-y-scroll hide ">
-            <TemplateProvider formating={formating} resume={resume} />
-          </div>{" "}
+          {/* {previewOpen && ( */}
+          <div
+              // onClick={() => setpreviewOpen(false)}
+              className="absolute 1200px:hidden h-full w-full bg-[#00000044] top-0 left-0 flex justify-center items-center"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-[430px] px-4"
+              >
+                <TemplateProvider formating={formating} resume={resume} />
+              </div>
+            </div>
+          {/* )} */}
         </div>
       </div>
     </div>

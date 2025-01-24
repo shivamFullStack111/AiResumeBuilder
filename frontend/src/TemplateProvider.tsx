@@ -39,15 +39,12 @@ const TemplateProvider: React.FC<ResumeProps> = (props) => {
         )}
 
         <div className=" bg-white rounded flex-col   h-full  flex  items-center shadow-md">
-          <div className="flex justify-between w-full mb-2  text-blue-500  font-semibold text-lg ">
-            <p className="hover:text-blue-600 cursor-pointer">
-              Change TemplateProvider
-            </p>
+          <div className="flex justify-between w-full   text-blue-500  font-semibold text-lg ">
             <p
               onClick={() =>
                 navigate(`?page=4&templateid=${resume?._id}&edit=complete`)
               }
-              className="hover:text-blue-600 cursor-pointer"
+              className="hover:text-blue-600 ml-auto p-2 cursor-pointer"
             >
               Preview
             </p>
@@ -239,7 +236,7 @@ export const Template: React.FC<TemplateProps> = (props) => {
       ) : null}
 
       {/* experience section  */}
-      {resume?.experience?.length ? (
+      {resume?.workExperience?.length ? (
         <div
           onClick={() =>
             navigate(
